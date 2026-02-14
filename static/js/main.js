@@ -33,26 +33,72 @@ function scrollToSection(id) {
     }
 }
 
+// Каталог объектов — подставляется с сервера (window.__CATALOG__) или пустой массив
+var projectCatalog = typeof window !== 'undefined' && window.__CATALOG__ ? window.__CATALOG__ : [];
+
+function openProjectModal(index) {
+    var data = projectCatalog.find(function(p) { return p.id === index; }) || projectCatalog[index];
+    if (!data) return;
+    var modal = document.getElementById('projectModal');
+    var titleEl = modal.querySelector('.modal-title');
+    var descEl = modal.querySelector('.modal-desc');
+    var galleryEl = document.getElementById('modalGallery');
+    titleEl.textContent = data.title;
+    descEl.textContent = data.description;
+    galleryEl.innerHTML = '';
+    data.images.forEach(function(src) {
+        var img = document.createElement('img');
+        img.src = src;
+        img.alt = data.title;
+        img.className = 'modal-gallery-img';
+        galleryEl.appendChild(img);
+    });
+    modal.classList.add('modal-open');
+    modal.setAttribute('aria-hidden', 'false');
+    document.body.style.overflow = 'hidden';
+}
+
+function closeProjectModal() {
+    var modal = document.getElementById('projectModal');
+    modal.classList.remove('modal-open');
+    modal.setAttribute('aria-hidden', 'true');
+    document.body.style.overflow = '';
+}
+
 // Contact form submission
 document.addEventListener('DOMContentLoaded', function() {
-    // Initialize Lucide icons - wait a bit to ensure lucide is loaded
-    setTimeout(function() {
-        if (typeof lucide !== 'undefined') {
-            lucide.createIcons();
+    var projectCards = document.querySelectorAll('.project-card');
+    projectCards.forEach(function(card) {
+        card.addEventListener('click', function() {
+            var id = card.getAttribute('data-project');
+            if (id !== null) openProjectModal(parseInt(id, 10));
+        });
+    });
+    var modal = document.getElementById('projectModal');
+    if (modal) {
+        modal.addEventListener('click', function(e) {
+            if (e.target === modal) closeProjectModal();
+        });
+    }
+    var modalClose = document.getElementById('modalClose');
+    if (modalClose) modalClose.addEventListener('click', closeProjectModal);
+    document.addEventListener('keydown', function(e) {
+        if (e.key === 'Escape' && document.getElementById('projectModal').classList.contains('modal-open')) {
+            closeProjectModal();
         }
-    }, 100);
-    
+    });
+
     const contactForm = document.getElementById('contactForm');
     
     if (contactForm) {
         contactForm.addEventListener('submit', async function(e) {
             e.preventDefault();
-            
+            var els = contactForm.elements;
             const formData = {
-                name: document.getElementById('name').value,
-                phone: document.getElementById('phone').value,
-                email: document.getElementById('email').value,
-                message: document.getElementById('message').value
+                name: els.name && els.name.value,
+                phone: els.phone && els.phone.value,
+                email: els.email && els.email.value,
+                message: els.message && els.message.value
             };
             
             try {
@@ -104,13 +150,12 @@ let lastScroll = 0;
 const header = document.querySelector('.header');
 
 window.addEventListener('scroll', function() {
-    const currentScroll = window.pageYOffset;
-    
+    if (!header) return;
+    const currentScroll = window.scrollY || window.pageYOffset;
     if (currentScroll > 100) {
         header.style.boxShadow = '0 2px 10px rgba(0, 0, 0, 0.1)';
     } else {
         header.style.boxShadow = 'none';
     }
-    
     lastScroll = currentScroll;
 });

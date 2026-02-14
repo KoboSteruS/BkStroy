@@ -7,655 +7,253 @@
     <link rel="icon" type="image/x-icon" href="{{ url_for('static', filename='images/logo.ico') }}">
     <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
 </head>
-<body>
+<body class="page">
     <!-- Header -->
     <header class="header">
-        <div class="container">
-            <div class="header-content">
-                <div class="logo">
+        <div class="container header-main">
+            <div class="header-row">
+                <a href="#hero" class="logo-block" onclick="scrollToSection('hero'); return false;">
                     <img src="{{ url_for('static', filename='images/logo.png') }}" alt="БК-СТРОЙ" class="logo-img">
-                </div>
+                    <div class="logo-text">
+                        <span class="logo-title">БК-СТРОЙ</span>
+                        <span class="logo-subtitle">Строительная компания</span>
+                    </div>
+                </a>
 
-                <!-- Desktop Navigation -->
                 <nav class="nav-desktop">
-                    <button class="nav-link" onclick="scrollToSection('about')">О нас</button>
-                    <button class="nav-link" onclick="scrollToSection('services')">Услуги</button>
-                    <button class="nav-link" onclick="scrollToSection('projects')">Проекты</button>
-                    <button class="nav-link" onclick="scrollToSection('contact')">Контакты</button>
-                    <button class="btn-primary" onclick="scrollToSection('contact')">Оставить заявку</button>
+                    <button type="button" class="nav-link" onclick="scrollToSection('about')">О нас</button>
+                    <button type="button" class="nav-link" onclick="scrollToSection('projects')">Объекты</button>
+                    <button type="button" class="nav-link" onclick="scrollToSection('process')">Услуги</button>
+                    <button type="button" class="btn-nav-cta" onclick="scrollToSection('contacts')">Связаться</button>
                 </nav>
 
-                <!-- Mobile menu button -->
-                <button class="mobile-menu-btn" onclick="toggleMobileMenu()">
+                <button type="button" class="mobile-menu-btn" onclick="toggleMobileMenu()" aria-label="Меню">
                     <span class="menu-icon" id="menuIcon">☰</span>
                 </button>
             </div>
 
-            <!-- Mobile Navigation -->
             <nav class="nav-mobile" id="mobileMenu">
-                <div class="mobile-nav-content">
-                    <button class="nav-link-mobile" onclick="scrollToSection('about')">О нас</button>
-                    <button class="nav-link-mobile" onclick="scrollToSection('services')">Услуги</button>
-                    <button class="nav-link-mobile" onclick="scrollToSection('projects')">Проекты</button>
-                    <button class="nav-link-mobile" onclick="scrollToSection('contact')">Контакты</button>
-                    <button class="btn-primary" onclick="scrollToSection('contact')">Оставить заявку</button>
-                </div>
+                <button type="button" class="nav-link-mobile" onclick="scrollToSection('about')">О нас</button>
+                <button type="button" class="nav-link-mobile" onclick="scrollToSection('projects')">Объекты</button>
+                <button type="button" class="nav-link-mobile" onclick="scrollToSection('process')">Услуги</button>
+                <button type="button" class="btn-nav-cta" onclick="scrollToSection('contacts')">Связаться</button>
             </nav>
         </div>
     </header>
 
     <main>
-        <!-- Hero Section -->
-        <section class="hero">
-            <div class="hero-background">
-                <img src="https://images.unsplash.com/photo-1695067440629-b5e513976100?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3Nzg4Nzd8MHwxfHNlYXJjaHwxfHxtb2Rlcm4lMjBidWlsZGluZyUyMGFyY2hpdGVjdHVyZXxlbnwxfHx8fDE3NjkzMTc3MzZ8MA&ixlib=rb-4.1.0&q=80&w=1080" alt="Современная архитектура" class="hero-img">
+        <!-- Hero -->
+        <section id="hero" class="hero">
+            <div class="hero-card">
+                <div class="hero-bg" aria-hidden="true"></div>
                 <div class="hero-overlay"></div>
-            </div>
-
-            <div class="hero-content">
-                <div class="hero-text">
-                    <h1 class="hero-title">
-                        Ремонт коммерческих помещений<br>
-                        <span class="hero-title-accent">и устройство фасадов</span>
-                    </h1>
-                    <p class="hero-description">
-                        Создаём функциональные, стильные и долговечные пространства для бизнеса,
-                        сочетая передовые технологии с внимательным отношением к вашим потребностям
-                    </p>
-                    <button class="btn-hero" onclick="scrollToSection('contact')">
-                        <span>Получить консультацию</span>
-                        <span class="arrow">→</span>
-                    </button>
-                </div>
-            </div>
-
-            <!-- Scroll Indicator -->
-            <div class="scroll-indicator">
-                <div class="scroll-mouse">
-                    <div class="scroll-dot"></div>
+                <div class="hero-grid container">
+                    <div class="hero-content">
+                            <h1 class="hero-title">{{ content.hero.title|default('Строительство и ремонт для вашего бизнеса') }}</h1>
+                            <p class="hero-desc">{{ content.hero.desc|default('Профессиональный ремонт коммерческих помещений и устройство фасадов зданий. Работаем быстро, качественно и в срок.') }}</p>
+                            <div class="hero-actions">
+                                <button type="button" class="btn-primary" onclick="scrollToSection('contacts')">
+                                    {{ content.hero.btn_primary|default('Начать сотрудничество') }}
+                                    <span class="btn-arrow">→</span>
+                                </button>
+                                <button type="button" class="btn-secondary" onclick="scrollToSection('projects')">
+                                    {{ content.hero.btn_secondary|default('Наши проекты') }}
+                                </button>
+                            </div>
+                    </div>
                 </div>
             </div>
         </section>
 
-        <!-- About Section -->
-        <section id="about" class="section about-section">
+        <!-- About -->
+        <section id="about" class="about">
             <div class="container">
                 <div class="about-grid">
                     <div class="about-text">
-                        <h2 class="section-title">О компании</h2>
-                        <p class="text-muted">
-                            Мы — современная строительная компания, специализирующаяся на ремонте 
-                            коммерческих помещений и устройстве фасадов зданий. Наша миссия — создавать 
-                            функциональные, стильные и долговечные пространства для бизнеса, сочетая 
-                            передовые технологии с внимательным отношением к потребностям клиента.
-                        </p>
-                        <p class="text-muted">
-                            За время работы мы успешно реализовали более 500 проектов в разных сегментах: 
-                            от офисов и магазинов до кафе и складских помещений. Для нас каждый заказ — 
-                            это не просто стройка, а возможность помочь бизнесу выглядеть достойно и 
-                            работать эффективно.
-                        </p>
+                        <h2 class="section-heading">{{ content.about.heading|default('О нас') }}</h2>
+                        <div class="about-paragraphs">
+                            <p>{{ content.about.p1|default('Мы — современная строительная компания, специализирующаяся на ремонте коммерческих помещений и устройстве фасадов зданий.') }}</p>
+                            <p>{{ content.about.p2|default('За время работы мы успешно реализовали множество проектов в разных сегментах.') }}</p>
+                        </div>
                     </div>
-                    <div class="about-image">
-                        <img src="https://images.unsplash.com/photo-1599995903128-531fc7fb694b?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3Nzg4Nzd8MHwxfHNlYXJjaHwxfHxjb25zdHJ1Y3Rpb24lMjBzaXRlfGVufDF8fHx8MTc2OTQxNjY3NXww&ixlib=rb-4.1.0&q=80&w=1080" alt="Строительная площадка" class="about-img">
+                    <div class="about-stats">
+                        {% for stat in content.about.stats|default([{'value':'10+','label':'Лет на рынке'},{'value':'1000+','label':'Довольных клиентов'},{'value':'4000+','label':'Проектов реализовано'},{'value':'95%','label':'Соблюдение сроков'}]) %}
+                        <div class="about-stat">
+                            <span class="about-stat-value">{{ stat.value }}</span>
+                            <span class="about-stat-label">{{ stat.label }}</span>
+                        </div>
+                        {% endfor %}
                     </div>
                 </div>
-
-                <!-- Stats Grid -->
-                <div class="stats-grid">
-                    <div class="stat-card">
-                        <div class="stat-icon-wrapper">
-                            <i data-lucide="building-2" class="stat-icon"></i>
-                        </div>
-                        <div class="stat-value">500+</div>
-                        <div class="stat-label">Проектов</div>
-                        <div class="stat-description">Успешно реализовано</div>
-                    </div>
-                    <div class="stat-card">
-                        <div class="stat-icon-wrapper">
-                            <i data-lucide="users" class="stat-icon"></i>
-                        </div>
-                        <div class="stat-value">150+</div>
-                        <div class="stat-label">Специалистов</div>
-                        <div class="stat-description">В нашей команде</div>
-                    </div>
-                    <div class="stat-card">
-                        <div class="stat-icon-wrapper">
-                            <i data-lucide="trending-up" class="stat-icon"></i>
-                        </div>
-                        <div class="stat-value">12+</div>
-                        <div class="stat-label">Лет опыта</div>
-                        <div class="stat-description">На рынке</div>
-                    </div>
-                    <div class="stat-card">
-                        <div class="stat-icon-wrapper">
-                            <i data-lucide="award" class="stat-icon"></i>
-                        </div>
-                        <div class="stat-value">98%</div>
-                        <div class="stat-label">Клиентов</div>
-                        <div class="stat-description">Возвращаются к нам</div>
+                <div class="partners">
+                    <p class="partners-title">{{ content.about.partners_title|default('Нам доверяют ведущие компании') }}</p>
+                    <div class="partners-list">
+                        {% for name in content.about.partners|default(['ПромСтрой','МегаГрупп','СтройАльянс','БизнесЦентр','ГородРемонт']) %}
+                        <span class="partner-item">{{ name }}</span>
+                        {% endfor %}
                     </div>
                 </div>
             </div>
         </section>
 
-        <!-- Services Section -->
-        <section id="services" class="section services-section">
+        <!-- Projects (Каталог объектов) -->
+        <section id="projects" class="projects">
             <div class="container">
-                <div class="section-header">
-                    <h2 class="section-title">Наши услуги</h2>
-                    <p class="section-description">
-                        Предлагаем полный спектр услуг по ремонту коммерческой недвижимости
-                        и отделке фасадов с гарантией качества
-                    </p>
-                </div>
-
-                <div class="services-grid">
-                    <div class="service-card">
-                        <div class="service-icon-wrapper">
-                            <i data-lucide="store" class="service-icon"></i>
-                        </div>
-                        <h3 class="service-title">Ремонт коммерческих помещений</h3>
-                        <p class="service-description">
-                            Комплексное обновление интерьера с учётом специфики бизнеса — от планировки до финишной отделки. Офисы, магазины, кафе, склады.
-                        </p>
-                    </div>
-                    <div class="service-card">
-                        <div class="service-icon-wrapper">
-                            <i data-lucide="building" class="service-icon"></i>
-                        </div>
-                        <h3 class="service-title">Отделка и облицовка фасадов</h3>
-                        <p class="service-description">
-                            Современные материалы и технологии для создания привлекательного и долговечного внешнего облика здания. Вентилируемые фасады, штукатурка, композит.
-                        </p>
-                    </div>
-                    <div class="service-card">
-                        <div class="service-icon-wrapper">
-                            <i data-lucide="palette" class="service-icon"></i>
-                        </div>
-                        <h3 class="service-title">Комплексное обновление объектов</h3>
-                        <p class="service-description">
-                            Полный цикл работ «под ключ», включая проектирование, инженерные системы и благоустройство прилегающей территории.
-                        </p>
-                    </div>
-                    <div class="service-card">
-                        <div class="service-icon-wrapper">
-                            <i data-lucide="file-text" class="service-icon"></i>
-                        </div>
-                        <h3 class="service-title">Экспертная оценка и проектирование</h3>
-                        <p class="service-description">
-                            Детальный анализ состояния помещения, разработка технических решений и смет. Помогаем принять правильное решение до начала работ.
-                        </p>
-                    </div>
-                </div>
-            </div>
-        </section>
-
-        <!-- Why Us Section -->
-        <section class="section whyus-section">
-            <div class="container">
-                <div class="section-header">
-                    <h2 class="section-title">Почему выбирают нас?</h2>
-                    <p class="section-description">
-                        Наши клиенты возвращаются к нам и рекомендуют нас партнёрам.
-                        Вот что обеспечивает доверие
-                    </p>
-                </div>
-
-                <div class="whyus-grid">
-                    <div class="whyus-card">
-                        <div class="whyus-icon-wrapper">
-                            <i data-lucide="user-check" class="whyus-icon"></i>
-                        </div>
-                        <div class="whyus-content">
-                            <h3 class="whyus-title">Клиент-ориентированный подход</h3>
-                            <p class="whyus-description">
-                                Внимательно изучаем задачи бизнеса, предлагаем индивидуальные решения и сопровождаем на всех этапах проекта.
-                            </p>
+                <div class="projects-layout">
+                    <div class="projects-sidebar">
+                        <h2 class="section-heading">{{ content.projects.heading|default('Каталог объектов') }}</h2>
+                        <p class="projects-desc">{{ content.projects.desc|default('Современные помещения и участки для развития вашего бизнеса. Все объекты проверены и готовы к использованию.') }}</p>
+                        <div class="projects-nav projects-nav-desktop">
+                            <button type="button" class="projects-nav-btn" id="projectsPrev" aria-label="Назад">
+                                <span>‹</span>
+                            </button>
+                            <button type="button" class="projects-nav-btn projects-nav-btn-primary" id="projectsNext" aria-label="Вперёд">
+                                <span>›</span>
+                            </button>
                         </div>
                     </div>
-                    <div class="whyus-card">
-                        <div class="whyus-icon-wrapper">
-                            <i data-lucide="clock" class="whyus-icon"></i>
+                    <div class="projects-content">
+                        <div class="projects-cards" id="projectsCards">
+                            {% for item in catalog %}
+                            <article class="project-card" data-project="{{ item.id }}">
+                                <div class="project-card-image-wrap">
+                                    <img src="{{ item.images[0] if item.images else '' }}" alt="{{ item.title }}" class="project-card-image">
+                                    <div class="project-card-overlay"></div>
+                                    <div class="project-card-icon">{{ item.icon or '📋' }}</div>
+                                </div>
+                                <h3 class="project-card-title">{{ item.title }}</h3>
+                                <p class="project-card-desc">{{ item.count }}</p>
+                            </article>
+                            {% endfor %}
                         </div>
-                        <div class="whyus-content">
-                            <h3 class="whyus-title">Соблюдение сроков</h3>
-                            <p class="whyus-description">
-                                Работаем по чёткому графику с прозрачными этапами — ваши сроки для нас нерушимы. Понимаем, что простой коммерческого помещения ведёт к убыткам.
-                            </p>
-                        </div>
-                    </div>
-                    <div class="whyus-card">
-                        <div class="whyus-icon-wrapper">
-                            <i data-lucide="shield" class="whyus-icon"></i>
-                        </div>
-                        <div class="whyus-content">
-                            <h3 class="whyus-title">Качество и надёжность</h3>
-                            <p class="whyus-description">
-                                Используем только сертифицированные материалы и проверенные технологии, гарантируя долговечность результата.
-                            </p>
-                        </div>
-                    </div>
-                    <div class="whyus-card">
-                        <div class="whyus-icon-wrapper">
-                            <i data-lucide="eye" class="whyus-icon"></i>
-                        </div>
-                        <div class="whyus-content">
-                            <h3 class="whyus-title">Прозрачность</h3>
-                            <p class="whyus-description">
-                                Предоставляем регулярные отчёты, обсуждаем детали и оперативно реагируем на ваши пожелания.
-                            </p>
-                        </div>
-                    </div>
-                    <div class="whyus-card">
-                        <div class="whyus-icon-wrapper">
-                            <i data-lucide="briefcase" class="whyus-icon"></i>
-                        </div>
-                        <div class="whyus-content">
-                            <h3 class="whyus-title">Опыт и экспертиза</h3>
-                            <p class="whyus-description">
-                                Команда профессионалов с многолетним стажем и профильным образованием, знающая особенности разных типов коммерческих объектов.
-                            </p>
-                        </div>
-                    </div>
-                    <div class="whyus-card">
-                        <div class="whyus-icon-wrapper">
-                            <i data-lucide="file-check" class="whyus-icon"></i>
-                        </div>
-                        <div class="whyus-content">
-                            <h3 class="whyus-title">Гарантия на работы</h3>
-                            <p class="whyus-description">
-                                Официальная гарантия на все виды выполненных работ — ваше спокойствие и уверенность в результате.
-                            </p>
+                        <div class="projects-nav projects-nav-mobile">
+                            <button type="button" class="projects-nav-btn" id="projectsPrevMobile" aria-label="Назад"><span>‹</span></button>
+                            <button type="button" class="projects-nav-btn projects-nav-btn-primary" id="projectsNextMobile" aria-label="Вперёд"><span>›</span></button>
                         </div>
                     </div>
                 </div>
             </div>
         </section>
 
-        <!-- Process Section -->
-        <section class="section process-section">
+        <!-- Process (Как мы работаем) -->
+        <section id="process" class="process">
             <div class="container">
-                <div class="section-header">
-                    <h2 class="section-title">Наш процесс работы</h2>
-                    <p class="section-description">
-                        Чёткая последовательность этапов гарантирует качественный результат
-                        и соблюдение всех договорённостей
-                    </p>
-                </div>
+                <h2 class="section-heading process-heading">{{ content.process.heading|default('Как мы работаем') }}</h2>
 
-                <div class="process-container">
-                    <div class="process-line"></div>
+                <div class="process-layout">
+                    <div class="process-media">
+                        <div class="process-image-wrap">
+                            <img src="https://images.unsplash.com/photo-1552835376-89b8cdfacb4d?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&q=80&w=1080" alt="Процесс работы" class="process-image">
+                            <div class="process-circle">
+                                <p class="process-circle-title">{{ content.process.circle_title|default('Бесплатная консультация') }}</p>
+                                <p class="process-circle-sub">{{ content.process.circle_sub|default('и расчет стоимости') }}</p>
+                            </div>
+                        </div>
+                        <ul class="process-advantages">
+                            {% for adv in content.process.advantages|default(['Работаем 7 дней в неделю','Собственный штат специалистов','Гарантия на все виды работ','Работы без предоплаты']) %}
+                            <li><span class="process-check">✓</span> {{ adv }}</li>
+                            {% endfor %}
+                        </ul>
+                    </div>
                     <div class="process-steps">
+                        {% for step in content.process.steps|default([]) %}
                         <div class="process-step">
-                            <div class="process-icon-circle">
-                                <div class="process-icon-bg"></div>
-                                <i data-lucide="message-circle" class="process-icon"></i>
-                                <div class="process-number">01</div>
+                            <div class="process-step-num">{{ step.num }}</div>
+                            <div class="process-step-body">
+                                <h3 class="process-step-title">{{ step.title }}</h3>
+                                <p class="process-step-desc">{{ step.desc }}</p>
                             </div>
-                            <h3 class="process-title">Консультация и анализ</h3>
-                            <p class="process-description">
-                                Встреча с клиентом, осмотр объекта, фиксация требований и особенностей бизнеса.
-                            </p>
                         </div>
-                        <div class="process-step">
-                            <div class="process-icon-circle">
-                                <div class="process-icon-bg"></div>
-                                <i data-lucide="pen-tool" class="process-icon"></i>
-                                <div class="process-number">02</div>
-                            </div>
-                            <h3 class="process-title">Проектирование</h3>
-                            <p class="process-description">
-                                Разработка технического решения, дизайн-концепции (при необходимости), согласование сметы и сроков.
-                            </p>
-                        </div>
-                        <div class="process-step">
-                            <div class="process-icon-circle">
-                                <div class="process-icon-bg"></div>
-                                <i data-lucide="package" class="process-icon"></i>
-                                <div class="process-number">03</div>
-                            </div>
-                            <h3 class="process-title">Подготовка</h3>
-                            <p class="process-description">
-                                Закупка материалов, организация площадки, получение разрешений, согласование графика работ с учётом режима работы объекта.
-                            </p>
-                        </div>
-                        <div class="process-step">
-                            <div class="process-icon-circle">
-                                <div class="process-icon-bg"></div>
-                                <i data-lucide="hammer" class="process-icon"></i>
-                                <div class="process-number">04</div>
-                            </div>
-                            <h3 class="process-title">Ремонт и обновление</h3>
-                            <p class="process-description">
-                                Выполнение работ с соблюдением нормативов, контролем качества и минимизацией неудобств для бизнеса.
-                            </p>
-                        </div>
-                        <div class="process-step">
-                            <div class="process-icon-circle">
-                                <div class="process-icon-bg"></div>
-                                <i data-lucide="check-circle" class="process-icon"></i>
-                                <div class="process-number">05</div>
-                            </div>
-                            <h3 class="process-title">Сдача объекта</h3>
-                            <p class="process-description">
-                                Финальная проверка, подписание актов, передача ключей и документации.
-                            </p>
-                        </div>
+                        {% endfor %}
                     </div>
                 </div>
 
-                <div class="principles-box">
-                    <h3 class="principles-title">Наши принципы</h3>
+                <div class="principles">
+                    <h3 class="principles-title">{{ content.process.principles_title|default('Наши принципы') }}</h3>
+                    <p class="principles-subtitle">{{ content.process.principles_subtitle|default('Не просто слова — а ежедневная практика') }}</p>
                     <div class="principles-grid">
-                        <div class="principle-item">
-                            <div class="principle-name">Ответственность</div>
-                            <p class="principle-text">
-                                Несём полную ответственность за результат и соблюдаем взятые обязательства
-                            </p>
+                        {% for p in content.process.principles|default([]) %}
+                        <div class="principle-card">
+                            <div class="principle-icon principle-icon-{{ 'blue' if loop.index == 2 else 'yellow' }}">
+                                {% if loop.index == 1 %}
+                                <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg>
+                                {% elif loop.index == 2 %}
+                                <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/><path d="M9 12l2 2 4-4"/></svg>
+                                {% else %}
+                                <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 18h6"/><path d="M10 22h4"/><path d="M15.09 14c.18-.98.65-1.74 1.41-2.5A4.65 4.65 0 0 0 18 8 6 6 0 0 0 6 8c0 1 .23 2.23 1.5 3.5A4.61 4.61 0 0 1 8.91 14"/></svg>
+                                {% endif %}
+                            </div>
+                            <h4 class="principle-heading">{{ p.heading }}</h4>
+                            <p class="principle-text">{{ p.text }}</p>
+                            <div class="principle-benefit">
+                                <p class="principle-benefit-label">{{ p.benefit_label }}</p>
+                                <p class="principle-benefit-text">{{ p.benefit_text }}</p>
+                            </div>
                         </div>
-                        <div class="principle-item">
-                            <div class="principle-name">Инновации</div>
-                            <p class="principle-text">
-                                Применяем передовые технологии и материалы для повышения эффективности
-                            </p>
-                        </div>
-                        <div class="principle-item">
-                            <div class="principle-name">Оперативность</div>
-                            <p class="principle-text">
-                                Работаем 7 дней в неделю, планируя работы так, чтобы сократить простой
-                            </p>
-                        </div>
+                        {% endfor %}
                     </div>
                 </div>
             </div>
         </section>
 
-        <!-- Projects Section -->
-        <section id="projects" class="section projects-section">
+        <!-- Contacts -->
+        <section id="contacts" class="contacts">
             <div class="container">
-                <div class="section-header">
-                    <h2 class="section-title">Реализованные проекты</h2>
-                    <p class="section-description">
-                        Портфолио успешно завершенных объектов в разных сегментах:
-                        офисы, магазины, кафе, склады и фасады
-                    </p>
-                </div>
-
-                <div class="projects-grid">
-                    <div class="project-card">
-                        <div class="project-image-wrapper">
-                            <img src="https://images.unsplash.com/photo-1646592491560-e121e097dcf2?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3Nzg4Nzd8MHwxfHNlYXJjaHwxfHxvZmZpY2UlMjByZW5vdmF0aW9uJTIwaW50ZXJpb3J8ZW58MXx8fHwxNzcwMDQ0ODMyfDA&ixlib=rb-4.1.0&q=80&w=1080" alt="Офис IT-компании" class="project-image">
-                            <div class="project-category">Ремонт офиса</div>
-                            <div class="project-overlay"></div>
-                        </div>
-                        <div class="project-content">
-                            <h3 class="project-title">Офис IT-компании "ТехноСофт"</h3>
-                            <div class="project-location">
-                                <span class="location-icon">📍</span>
-                                <span>Москва, БЦ "Столица"</span>
-                            </div>
-                            <div class="project-info">
-                                <div>
-                                    <span class="info-label">Площадь: </span>
-                                    <span>850 м²</span>
-                                </div>
-                                <div>
-                                    <span class="info-label">Год: </span>
-                                    <span>2024</span>
-                                </div>
-                            </div>
-                            <div class="project-link">
-                                <span>Подробнее</span>
-                                <span class="link-arrow">↗</span>
-                            </div>
-                        </div>
+                <div class="contacts-inner">
+                    <div class="contacts-header">
+                        <h2 class="section-heading">{{ content.contacts.heading|default('Свяжитесь с нами') }}</h2>
+                        <p class="contacts-subtitle">{{ content.contacts.subtitle|default('Готовы обсудить ваш проект? Оставьте заявку, и мы свяжемся с вами в течение часа') }}</p>
                     </div>
-                    <div class="project-card">
-                        <div class="project-image-wrapper">
-                            <img src="https://images.unsplash.com/photo-1736236560164-bc741c70bca5?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3Nzg4Nzd8MHwxfHNlYXJjaHwxfHxyZXRhaWwlMjBzdG9yZSUyMGludGVyaW9yfGVufDF8fHx8MTc3MDA0NDgzMnww&ixlib=rb-4.1.0&q=80&w=1080" alt="Магазин премиум-одежды" class="project-image">
-                            <div class="project-category">Ремонт магазина</div>
-                            <div class="project-overlay"></div>
-                        </div>
-                        <div class="project-content">
-                            <h3 class="project-title">Магазин премиум-одежды "Стиль"</h3>
-                            <div class="project-location">
-                                <span class="location-icon">📍</span>
-                                <span>Санкт-Петербург, Невский пр.</span>
-                            </div>
-                            <div class="project-info">
-                                <div>
-                                    <span class="info-label">Площадь: </span>
-                                    <span>320 м²</span>
-                                </div>
-                                <div>
-                                    <span class="info-label">Год: </span>
-                                    <span>2024</span>
-                                </div>
-                            </div>
-                            <div class="project-link">
-                                <span>Подробнее</span>
-                                <span class="link-arrow">↗</span>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="project-card">
-                        <div class="project-image-wrapper">
-                            <img src="https://images.unsplash.com/photo-1551530078-379240770349?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3Nzg4Nzd8MHwxfHNlYXJjaHwxfHxjYWZlJTIwcmVzdGF1cmFudCUyMGludGVyaW9yfGVufDF8fHx8MTc3MDAxMjg4Nnww&ixlib=rb-4.1.0&q=80&w=1080" alt="Кафе-кондитерская" class="project-image">
-                            <div class="project-category">Ремонт кафе</div>
-                            <div class="project-overlay"></div>
-                        </div>
-                        <div class="project-content">
-                            <h3 class="project-title">Кафе-кондитерская "Сладкий уголок"</h3>
-                            <div class="project-location">
-                                <span class="location-icon">📍</span>
-                                <span>Москва, ул. Арбат</span>
-                            </div>
-                            <div class="project-info">
-                                <div>
-                                    <span class="info-label">Площадь: </span>
-                                    <span>180 м²</span>
-                                </div>
-                                <div>
-                                    <span class="info-label">Год: </span>
-                                    <span>2023</span>
-                                </div>
-                            </div>
-                            <div class="project-link">
-                                <span>Подробнее</span>
-                                <span class="link-arrow">↗</span>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="project-card">
-                        <div class="project-image-wrapper">
-                            <img src="https://images.unsplash.com/photo-1707823945934-bd0e46f4a612?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3Nzg4Nzd8MHwxfHNlYXJjaHwxfHxvZmZpY2UlMjBidWlsZGluZyUyMGZhY2FkZXxlbnwxfHx8fDE3Njk0MjA4OTZ8MA&ixlib=rb-4.1.0&q=80&w=1080" alt="Фасад бизнес-центра" class="project-image">
-                            <div class="project-category">Отделка фасада</div>
-                            <div class="project-overlay"></div>
-                        </div>
-                        <div class="project-content">
-                            <h3 class="project-title">Фасад бизнес-центра "Горизонт"</h3>
-                            <div class="project-location">
-                                <span class="location-icon">📍</span>
-                                <span>Казань, ул. Баумана</span>
-                            </div>
-                            <div class="project-info">
-                                <div>
-                                    <span class="info-label">Площадь: </span>
-                                    <span>3 200 м²</span>
-                                </div>
-                                <div>
-                                    <span class="info-label">Год: </span>
-                                    <span>2023</span>
-                                </div>
-                            </div>
-                            <div class="project-link">
-                                <span>Подробнее</span>
-                                <span class="link-arrow">↗</span>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="project-card">
-                        <div class="project-image-wrapper">
-                            <img src="https://images.unsplash.com/photo-1599995903128-531fc7fb694b?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3Nzg4Nzd8MHwxfHNlYXJjaHwxfHxjb25zdHJ1Y3Rpb24lMjBzaXRlfGVufDF8fHx8MTc2OTQxNjY3NXww&ixlib=rb-4.1.0&q=80&w=1080" alt="Склад логистической компании" class="project-image">
-                            <div class="project-category">Ремонт склада</div>
-                            <div class="project-overlay"></div>
-                        </div>
-                        <div class="project-content">
-                            <h3 class="project-title">Склад логистической компании</h3>
-                            <div class="project-location">
-                                <span class="location-icon">📍</span>
-                                <span>Подмосковье, Химки</span>
-                            </div>
-                            <div class="project-info">
-                                <div>
-                                    <span class="info-label">Площадь: </span>
-                                    <span>1 500 м²</span>
-                                </div>
-                                <div>
-                                    <span class="info-label">Год: </span>
-                                    <span>2023</span>
-                                </div>
-                            </div>
-                            <div class="project-link">
-                                <span>Подробнее</span>
-                                <span class="link-arrow">↗</span>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="project-card">
-                        <div class="project-image-wrapper">
-                            <img src="https://images.unsplash.com/photo-1675279200694-8529c73b1fd0?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3Nzg4Nzd8MHwxfHNlYXJjaHwxfHxhcGFydG1lbnQlMjBpbnRlcmlvcnxlbnwxfHx8fDE3NjkzNDYzNzR8MA&ixlib=rb-4.1.0&q=80&w=1080" alt="Салон красоты" class="project-image">
-                            <div class="project-category">Ремонт салона</div>
-                            <div class="project-overlay"></div>
-                        </div>
-                        <div class="project-content">
-                            <h3 class="project-title">Салон красоты "Элеганс"</h3>
-                            <div class="project-location">
-                                <span class="location-icon">📍</span>
-                                <span>Москва, Тверская ул.</span>
-                            </div>
-                            <div class="project-info">
-                                <div>
-                                    <span class="info-label">Площадь: </span>
-                                    <span>250 м²</span>
-                                </div>
-                                <div>
-                                    <span class="info-label">Год: </span>
-                                    <span>2024</span>
-                                </div>
-                            </div>
-                            <div class="project-link">
-                                <span>Подробнее</span>
-                                <span class="link-arrow">↗</span>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </section>
-
-        <!-- Contact Section -->
-        <section id="contact" class="section contact-section">
-            <div class="container">
-                <div class="section-header">
-                    <h2 class="section-title">Свяжитесь с нами</h2>
-                    <p class="section-description">
-                        Оставьте заявку, и мы свяжемся с вами в течение 2 часов для бесплатной 
-                        консультации и предварительного расчёта стоимости работ
-                    </p>
-                </div>
-
-                <div class="contact-grid">
-                    <!-- Contact Info -->
-                    <div class="contact-info">
-                        <div class="contact-card">
-                            <h3 class="contact-card-title">Контактная информация</h3>
-                            <div class="contact-items">
-                                <div class="contact-item">
-                                    <div class="contact-icon-wrapper">
-                                        <div class="contact-icon">📞</div>
-                                    </div>
-                                    <div class="contact-details">
-                                        <div class="contact-label">Телефон</div>
-                                        <a href="tel:+74951234567" class="contact-link">+7 (495) 123-45-67</a>
-                                    </div>
-                                </div>
-
-                                <div class="contact-item">
-                                    <div class="contact-icon-wrapper">
-                                        <div class="contact-icon">✉️</div>
-                                    </div>
-                                    <div class="contact-details">
-                                        <div class="contact-label">Email</div>
-                                        <a href="mailto:info@bk-stroy.ru" class="contact-link">info@bk-stroy.ru</a>
-                                    </div>
-                                </div>
-
-                                <div class="contact-item">
-                                    <div class="contact-icon-wrapper">
-                                        <div class="contact-icon">📍</div>
-                                    </div>
-                                    <div class="contact-details">
-                                        <div class="contact-label">Адрес</div>
-                                        <p class="contact-text">
-                                            г. Москва, ул. Строителей, д. 15<br>
-                                            БЦ "Столица", офис 501
-                                        </p>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-
-                        <div class="contact-hours">
-                            <h3 class="contact-hours-title">Режим работы</h3>
-                            <div class="hours-list">
-                                <div class="hours-item">
-                                    <span>Понедельник - Пятница</span>
-                                    <span>9:00 - 18:00</span>
-                                </div>
-                                <div class="hours-item">
-                                    <span>Суббота</span>
-                                    <span>10:00 - 16:00</span>
-                                </div>
-                                <div class="hours-item">
-                                    <span>Воскресенье</span>
-                                    <span>Выходной</span>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-
-                    <!-- Contact Form -->
-                    <div class="contact-form-wrapper">
-                        <div class="contact-form-card">
-                            <h3 class="contact-form-title">Оставить заявку</h3>
-                            <form id="contactForm" class="contact-form">
+                    <div class="contacts-card">
+                        <form id="contactForm" class="contact-form">
+                            <div class="form-row">
                                 <div class="form-group">
-                                    <label for="name" class="form-label">Ваше имя</label>
-                                    <input type="text" id="name" name="name" required class="form-input" placeholder="Иван Иванов">
+                                    <label class="form-label">Ваше имя *</label>
+                                    <input type="text" name="name" required class="form-input" placeholder="Иван Иванов">
                                 </div>
-
                                 <div class="form-group">
-                                    <label for="phone" class="form-label">Телефон</label>
-                                    <input type="tel" id="phone" name="phone" required class="form-input" placeholder="+7 (___) ___-__-__">
+                                    <label class="form-label">Телефон *</label>
+                                    <input type="tel" name="phone" required class="form-input" placeholder="+7 (___) ___-__-__">
                                 </div>
-
-                                <div class="form-group">
-                                    <label for="email" class="form-label">Email</label>
-                                    <input type="email" id="email" name="email" required class="form-input" placeholder="ivan@example.com">
+                            </div>
+                            <div class="form-group">
+                                <label class="form-label">E-mail *</label>
+                                <input type="email" name="email" required class="form-input" placeholder="example@email.com">
+                            </div>
+                            <div class="form-group">
+                                <label class="form-label">Сообщение *</label>
+                                <textarea name="message" required rows="5" class="form-textarea" placeholder="Расскажите о вашем проекте..."></textarea>
+                            </div>
+                            <button type="submit" class="btn-submit">Отправить заявку</button>
+                        </form>
+                        <div class="contacts-info">
+                            <div class="contact-info-item">
+                                <div class="contact-info-icon">
+                                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"/></svg>
                                 </div>
-
-                                <div class="form-group">
-                                    <label for="message" class="form-label">Сообщение</label>
-                                    <textarea id="message" name="message" required rows="4" class="form-textarea" placeholder="Расскажите о вашем проекте..."></textarea>
+                                <div>
+                                    <p class="contact-info-label">Телефон</p>
+                                    <a href="tel:{{ content.contacts.phone|default('+74951234567')|replace(' ','')|replace('(','')|replace(')','')|replace('-','') }}" class="contact-info-value">{{ content.contacts.phone|default('+7 (495) 123-45-67') }}</a>
                                 </div>
-
-                                <button type="submit" class="btn-submit">
-                                    <span>Отправить заявку</span>
-                                    <span class="submit-arrow">→</span>
-                                </button>
-                            </form>
+                            </div>
+                            <div class="contact-info-item">
+                                <div class="contact-info-icon">
+                                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
+                                </div>
+                                <div>
+                                    <p class="contact-info-label">E-mail</p>
+                                    <a href="mailto:{{ content.contacts.email|default('info@bk-stroy.ru') }}" class="contact-info-value">{{ content.contacts.email|default('info@bk-stroy.ru') }}</a>
+                                </div>
+                            </div>
+                            <div class="contact-info-item">
+                                <div class="contact-info-icon">
+                                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+                                </div>
+                                <div>
+                                    <p class="contact-info-label">Режим работы</p>
+                                    <p class="contact-info-value">{{ content.contacts.schedule|default('Пн-Вс: 8:00 - 20:00') }}</p>
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -663,63 +261,63 @@
         </section>
     </main>
 
-    <!-- Footer -->
     <footer class="footer">
         <div class="container">
             <div class="footer-grid">
-                <!-- Company Info -->
-                <div class="footer-company">
-                    <img src="{{ url_for('static', filename='images/logo.png') }}" alt="БК-СТРОЙ" class="footer-logo">
-                    <p class="footer-description">
-                        Строительная компания полного цикла. Реализуем проекты любой сложности
-                        с гарантией качества и соблюдением сроков.
-                    </p>
+                    <div class="footer-brand">
+                        <div class="footer-logo-block">
+                            <img src="{{ url_for('static', filename='images/logo.png') }}" alt="БК-СТРОЙ" class="footer-logo-img">
+                            <div>
+                                <div class="footer-logo-title">{{ content.footer.logo_title|default('БК-СТРОЙ') }}</div>
+                                <div class="footer-logo-subtitle">{{ content.footer.logo_subtitle|default('Строительная компания') }}</div>
+                            </div>
+                        </div>
+                    <p class="footer-about">{{ content.footer.about|default('Современная строительная компания, специализирующаяся на ремонте коммерческих помещений и устройстве фасадов зданий. Работаем с 2016 года.') }}</p>
+                    <div class="footer-social">
+                        <a href="#" class="footer-social-link" aria-label="Facebook">f</a>
+                        <a href="#" class="footer-social-link" aria-label="Instagram">ig</a>
+                        <a href="#" class="footer-social-link" aria-label="LinkedIn">in</a>
+                    </div>
                 </div>
-
-                <!-- Quick Links -->
-                <div class="footer-links">
-                    <h3 class="footer-title">Быстрые ссылки</h3>
-                    <ul class="footer-list">
-                        <li><a href="#about" class="footer-link">О компании</a></li>
-                        <li><a href="#services" class="footer-link">Услуги</a></li>
-                        <li><a href="#projects" class="footer-link">Проекты</a></li>
-                        <li><a href="#contact" class="footer-link">Контакты</a></li>
+                <div class="footer-col">
+                    <h3 class="footer-col-title">{{ content.footer.nav_title|default('Навигация') }}</h3>
+                    <ul class="footer-links">
+                        <li><a href="#about">О нас</a></li>
+                        <li><a href="#projects">Объекты</a></li>
+                        <li><a href="#process">Услуги</a></li>
+                        <li><a href="#contacts">Контакты</a></li>
                     </ul>
                 </div>
-
-                <!-- Contact Info -->
-                <div class="footer-contact">
-                    <h3 class="footer-title">Контакты</h3>
-                    <ul class="footer-list">
-                        <li class="footer-contact-item">
-                            <span class="footer-icon">📞</span>
-                            <a href="tel:+74951234567" class="footer-link">+7 (495) 123-45-67</a>
-                        </li>
-                        <li class="footer-contact-item">
-                            <span class="footer-icon">✉️</span>
-                            <a href="mailto:info@bk-stroy.ru" class="footer-link">info@bk-stroy.ru</a>
-                        </li>
-                        <li class="footer-contact-item">
-                            <span class="footer-icon">📍</span>
-                            <span>г. Москва, ул. Строителей, д. 15</span>
-                        </li>
+                <div class="footer-col">
+                    <h3 class="footer-col-title">{{ content.footer.services_title|default('Наши услуги') }}</h3>
+                    <ul class="footer-services">
+                        {% for s in content.footer.services|default(['Ремонт коммерческих помещений','Устройство фасадов','Проектирование','Экспертная оценка']) %}
+                        <li>{{ s }}</li>
+                        {% endfor %}
                     </ul>
                 </div>
             </div>
-
             <div class="footer-bottom">
-                <p class="footer-copyright">
-                    © <span id="currentYear"></span> БК-СТРОЙ. Все права защищены.
-                </p>
+                <p class="footer-copy">© <span id="currentYear"></span> {{ content.footer.copy|default('БК-СТРОЙ. Все права защищены.') }}</p>
                 <div class="footer-legal">
-                    <a href="#" class="footer-link">Политика конфиденциальности</a>
-                    <a href="#" class="footer-link">Пользовательское соглашение</a>
+                    <a href="#">Политика конфиденциальности</a>
+                    <a href="#">Условия использования</a>
                 </div>
             </div>
         </div>
     </footer>
 
-    <script src="https://unpkg.com/lucide@latest"></script>
+    <!-- Модальное окно каталога -->
+    <div class="modal-overlay" id="projectModal" aria-hidden="true">
+        <div class="modal" role="dialog" aria-modal="true" aria-labelledby="modalTitle">
+            <button type="button" class="modal-close" id="modalClose" aria-label="Закрыть">&times;</button>
+            <h2 class="modal-title" id="modalTitle"></h2>
+            <p class="modal-desc"></p>
+            <div class="modal-gallery" id="modalGallery"></div>
+        </div>
+    </div>
+
+    <script>window.__CATALOG__ = {{ catalog|tojson }};</script>
     <script src="{{ url_for('static', filename='js/main.js') }}"></script>
 </body>
 </html>

@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Админ-панель — БК-СТРОЙ</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/admin.css') }}">
+</head>
+<body class="admin-page">
+    <header class="admin-header">
+        <div class="admin-header-inner">
+            <h1 class="admin-logo">Админ-панель БК-СТРОЙ</h1>
+            <a href="/" class="admin-link-site" target="_blank">Открыть сайт</a>
+            <button type="button" class="admin-btn admin-btn-outline" id="adminLogout">Выйти</button>
+        </div>
+    </header>
+
+    <main class="admin-main">
+        <section class="admin-section">
+            <h2 class="admin-section-title">Тексты сайта</h2>
+            <p class="admin-section-desc">Измените заголовки, описания и контакты на главной странице.</p>
+            <div class="admin-toolbar">
+                <button type="button" class="admin-btn admin-btn-primary" id="btnEditTexts">Редактировать тексты</button>
+            </div>
+        </section>
+
+        <section class="admin-section">
+            <h2 class="admin-section-title">Каталог объектов</h2>
+            <p class="admin-section-desc">Добавляйте, редактируйте и удаляйте объекты. Изменения сразу отображаются на главной странице.</p>
+
+            <div class="admin-toolbar">
+                <button type="button" class="admin-btn admin-btn-primary" id="btnAddObject">+ Добавить объект</button>
+            </div>
+
+            <div class="admin-catalog-list" id="catalogList"></div>
+        </section>
+    </main>
+
+    <!-- Модальное окно: добавление/редактирование объекта -->
+    <div class="admin-modal-overlay" id="objectModal">
+        <div class="admin-modal">
+            <div class="admin-modal-head">
+                <h3 class="admin-modal-title" id="objectModalTitle">Добавить объект</h3>
+                <button type="button" class="admin-modal-close" id="objectModalClose">&times;</button>
+            </div>
+            <form id="objectForm" class="admin-form">
+                <input type="hidden" id="objectId" name="id">
+                <div class="admin-form-group">
+                    <label for="objectTitle">Название *</label>
+                    <input type="text" id="objectTitle" name="title" required placeholder="Например: Офисные помещения">
+                </div>
+                <div class="admin-form-group">
+                    <label for="objectCount">Подпись (количество) *</label>
+                    <input type="text" id="objectCount" name="count" required placeholder="Например: 800+ объектов">
+                </div>
+                <div class="admin-form-group">
+                    <label for="objectIcon">Иконка (эмодзи)</label>
+                    <input type="text" id="objectIcon" name="icon" placeholder="🏢 📦 📍">
+                </div>
+                <div class="admin-form-group">
+                    <label for="objectDescription">Описание *</label>
+                    <textarea id="objectDescription" name="description" rows="4" required placeholder="Текст для модального окна при клике на карточку"></textarea>
+                </div>
+                <div class="admin-form-group">
+                    <label>Фотографии (URL, по одному на строку)</label>
+                    <textarea id="objectImages" name="images" rows="4" placeholder="https://example.com/photo1.jpg&#10;https://example.com/photo2.jpg"></textarea>
+                </div>
+                <div class="admin-form-actions">
+                    <button type="button" class="admin-btn admin-btn-outline" id="objectModalCancel">Отмена</button>
+                    <button type="submit" class="admin-btn admin-btn-primary">Сохранить</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Модальное окно: тексты сайта -->
+    <div class="admin-modal-overlay" id="textsModal">
+        <div class="admin-modal admin-modal-wide">
+            <div class="admin-modal-head">
+                <h3 class="admin-modal-title">Тексты сайта</h3>
+                <button type="button" class="admin-modal-close" id="textsModalClose">&times;</button>
+            </div>
+            <form id="textsForm" class="admin-form">
+                <div class="admin-texts-sections">
+                    <div class="admin-texts-block" data-block="hero">
+                        <h4 class="admin-texts-block-title">Блок Hero (главный экран)</h4>
+                        <div class="admin-form-group"><label>Заголовок</label><input type="text" id="t_hero_title" name="hero_title"></div>
+                        <div class="admin-form-group"><label>Описание</label><textarea id="t_hero_desc" name="hero_desc" rows="2"></textarea></div>
+                        <div class="admin-form-group"><label>Кнопка (основная)</label><input type="text" id="t_hero_btn_primary" name="hero_btn_primary"></div>
+                        <div class="admin-form-group"><label>Кнопка (вторая)</label><input type="text" id="t_hero_btn_secondary" name="hero_btn_secondary"></div>
+                    </div>
+                    <div class="admin-texts-block" data-block="about">
+                        <h4 class="admin-texts-block-title">О нас</h4>
+                        <div class="admin-form-group"><label>Заголовок</label><input type="text" id="t_about_heading" name="about_heading"></div>
+                        <div class="admin-form-group"><label>Текст 1</label><textarea id="t_about_p1" name="about_p1" rows="3"></textarea></div>
+                        <div class="admin-form-group"><label>Текст 2</label><textarea id="t_about_p2" name="about_p2" rows="3"></textarea></div>
+                        <div class="admin-form-group"><label>Статистика (4 строки: значение — подпись, например «10+ — Лет на рынке»)</label><textarea id="t_about_stats" name="about_stats" rows="4"></textarea></div>
+                        <div class="admin-form-group"><label>Заголовок партнёров</label><input type="text" id="t_about_partners_title" name="about_partners_title"></div>
+                        <div class="admin-form-group"><label>Партнёры (по одному на строку)</label><textarea id="t_about_partners" name="about_partners" rows="4"></textarea></div>
+                    </div>
+                    <div class="admin-texts-block" data-block="projects">
+                        <h4 class="admin-texts-block-title">Каталог объектов</h4>
+                        <div class="admin-form-group"><label>Заголовок</label><input type="text" id="t_projects_heading" name="projects_heading"></div>
+                        <div class="admin-form-group"><label>Описание</label><textarea id="t_projects_desc" name="projects_desc" rows="2"></textarea></div>
+                    </div>
+                    <div class="admin-texts-block" data-block="process">
+                        <h4 class="admin-texts-block-title">Как мы работаем</h4>
+                        <div class="admin-form-group"><label>Заголовок</label><input type="text" id="t_process_heading" name="process_heading"></div>
+                        <div class="admin-form-group"><label>Текст в круге (строка 1)</label><input type="text" id="t_process_circle_title" name="process_circle_title"></div>
+                        <div class="admin-form-group"><label>Текст в круге (строка 2)</label><input type="text" id="t_process_circle_sub" name="process_circle_sub"></div>
+                        <div class="admin-form-group"><label>Преимущества (по одному на строку, 4 строки)</label><textarea id="t_process_advantages" name="process_advantages" rows="4"></textarea></div>
+                        <div class="admin-form-group"><label>Шаги (каждый шаг с новой строки в формате: Номер|Заголовок|Описание, разделитель — вертикальная черта |)</label><textarea id="t_process_steps" name="process_steps" rows="8"></textarea></div>
+                        <div class="admin-form-group"><label>Заголовок «Наши принципы»</label><input type="text" id="t_process_principles_title" name="process_principles_title"></div>
+                        <div class="admin-form-group"><label>Подзаголовок принципов</label><input type="text" id="t_process_principles_subtitle" name="process_principles_subtitle"></div>
+                        <div class="admin-form-group"><label>Принципы (каждый блок с новой строки в формате: Заголовок|Текст|Подпись блока|Текст блока «Что это значит»)</label><textarea id="t_process_principles" name="process_principles" rows="6"></textarea></div>
+                    </div>
+                    <div class="admin-texts-block" data-block="contacts">
+                        <h4 class="admin-texts-block-title">Контакты</h4>
+                        <div class="admin-form-group"><label>Заголовок</label><input type="text" id="t_contacts_heading" name="contacts_heading"></div>
+                        <div class="admin-form-group"><label>Подзаголовок</label><textarea id="t_contacts_subtitle" name="contacts_subtitle" rows="2"></textarea></div>
+                        <div class="admin-form-group"><label>Телефон</label><input type="text" id="t_contacts_phone" name="contacts_phone"></div>
+                        <div class="admin-form-group"><label>E-mail</label><input type="email" id="t_contacts_email" name="contacts_email"></div>
+                        <div class="admin-form-group"><label>Режим работы</label><input type="text" id="t_contacts_schedule" name="contacts_schedule"></div>
+                    </div>
+                    <div class="admin-texts-block" data-block="footer">
+                        <h4 class="admin-texts-block-title">Подвал</h4>
+                        <div class="admin-form-group"><label>Название компании</label><input type="text" id="t_footer_logo_title" name="footer_logo_title"></div>
+                        <div class="admin-form-group"><label>Подпись под логотипом</label><input type="text" id="t_footer_logo_subtitle" name="footer_logo_subtitle"></div>
+                        <div class="admin-form-group"><label>Текст о компании</label><textarea id="t_footer_about" name="footer_about" rows="3"></textarea></div>
+                        <div class="admin-form-group"><label>Заголовок «Навигация»</label><input type="text" id="t_footer_nav_title" name="footer_nav_title"></div>
+                        <div class="admin-form-group"><label>Заголовок «Наши услуги»</label><input type="text" id="t_footer_services_title" name="footer_services_title"></div>
+                        <div class="admin-form-group"><label>Услуги (по одному на строку)</label><textarea id="t_footer_services" name="footer_services" rows="4"></textarea></div>
+                        <div class="admin-form-group"><label>Копирайт (без © и года)</label><input type="text" id="t_footer_copy" name="footer_copy"></div>
+                    </div>
+                </div>
+                <div class="admin-form-actions">
+                    <button type="button" class="admin-btn admin-btn-outline" id="textsModalCancel">Отмена</button>
+                    <button type="submit" class="admin-btn admin-btn-primary">Сохранить все тексты</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <script src="{{ url_for('static', filename='js/admin.js') }}"></script>
+</body>
+</html>
