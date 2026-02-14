@@ -27,6 +27,9 @@ wheels/
 instance/
 .webassets-cache
 
+# Загруженные изображения (каталог)
+static/uploads/
+
 
 
 # IDE

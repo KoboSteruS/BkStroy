@@ -120,6 +120,50 @@
         });
     }
 
+    var objectImagesUpload = document.getElementById('objectImagesUpload');
+    var btnUploadImages = document.getElementById('btnUploadImages');
+
+    function triggerImageUpload() {
+        if (objectImagesUpload) objectImagesUpload.click();
+    }
+
+    function onImageFilesSelected() {
+        var files = objectImagesUpload && objectImagesUpload.files;
+        if (!files || files.length === 0) return;
+        var formData = new FormData();
+        for (var i = 0; i < files.length; i++) formData.append('files', files[i]);
+        if (btnUploadImages) {
+            btnUploadImages.disabled = true;
+            btnUploadImages.textContent = 'Загрузка…';
+        }
+        fetch('/api/admin/upload', {
+            method: 'POST',
+            body: formData,
+            credentials: 'same-origin'
+        }).then(function(r) {
+            if (!r.ok) return r.json().then(function(d) { throw new Error(d.error || 'Ошибка загрузки'); });
+            return r.json();
+        }).then(function(data) {
+            var urls = (data.urls || []).filter(Boolean);
+            if (urls.length) {
+                var cur = objectImages.value.trim();
+                var add = urls.join('\n');
+                objectImages.value = cur ? cur + '\n' + add : add;
+            }
+        }).catch(function(err) {
+            alert('Ошибка: ' + err.message);
+        }).then(function() {
+            if (btnUploadImages) {
+                btnUploadImages.disabled = false;
+                btnUploadImages.textContent = 'Загрузить фото';
+            }
+            objectImagesUpload.value = '';
+        });
+    }
+
+    if (btnUploadImages) btnUploadImages.addEventListener('click', triggerImageUpload);
+    if (objectImagesUpload) objectImagesUpload.addEventListener('change', onImageFilesSelected);
+
     objectForm.addEventListener('submit', function(e) {
         e.preventDefault();
         var id = objectId.value ? parseInt(objectId.value, 10) : null;

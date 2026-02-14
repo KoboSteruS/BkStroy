@@ -11,6 +11,13 @@ CONFIG_PATH = os.path.join(os.path.dirname(__file__), 'config', 'admin_config.js
 CATALOG_PATH = os.path.join(os.path.dirname(__file__), 'data', 'catalog.json')
 SITE_CONTENT_PATH = os.path.join(os.path.dirname(__file__), 'data', 'site_content.json')
 
+# Загрузка изображений (каталог объектов)
+UPLOAD_FOLDER = os.path.join(os.path.dirname(__file__), 'static', 'uploads', 'catalog')
+ALLOWED_EXTENSIONS = {'png', 'jpg', 'jpeg', 'gif', 'webp'}
+
+def allowed_file(filename):
+    return '.' in filename and filename.rsplit('.', 1)[1].lower() in ALLOWED_EXTENSIONS
+
 def load_config():
     if os.path.exists(CONFIG_PATH):
         with open(CONFIG_PATH, 'r', encoding='utf-8') as f:
@@ -159,6 +166,29 @@ def api_catalog_delete(item_id):
         return jsonify({'error': 'Not found'}), 404
     save_catalog(new_catalog)
     return jsonify({'ok': True})
+
+# --- Загрузка изображений (только для админа) ---
+@app.route('/api/admin/upload', methods=['POST'])
+@admin_required
+def api_upload():
+    if 'files' not in request.files and 'file' not in request.files:
+        return jsonify({'error': 'No file part'}), 400
+    files = request.files.getlist('files') if 'files' in request.files else [request.files['file']]
+    urls = []
+    os.makedirs(UPLOAD_FOLDER, exist_ok=True)
+    for f in files:
+        if not f or not f.filename:
+            continue
+        if not allowed_file(f.filename):
+            continue
+        ext = f.filename.rsplit('.', 1)[1].lower()
+        name = str(uuid.uuid4()) + '.' + ext
+        path = os.path.join(UPLOAD_FOLDER, name)
+        f.save(path)
+        urls.append(url_for('static', filename='uploads/catalog/' + name))
+    if not urls:
+        return jsonify({'error': 'No valid files (allowed: png, jpg, jpeg, gif, webp)'}), 400
+    return jsonify({'urls': urls})
 
 # --- API текстов сайта (только для админа) ---
 @app.route('/api/admin/site-content', methods=['GET'])
