@@ -14,10 +14,10 @@
             <div class="header-row">
                 <a href="#hero" class="logo-block" onclick="scrollToSection('hero'); return false;">
                     <img src="{{ url_for('static', filename='images/logo.png') }}" alt="БК-СТРОЙ" class="logo-img">
-                    <div class="logo-text">
+                    <!-- <div class="logo-text">
                         <span class="logo-title">БК-СТРОЙ</span>
                         <span class="logo-subtitle">Строительная компания</span>
-                    </div>
+                    </div> -->
                 </a>
 
                 <nav class="nav-desktop">
@@ -54,7 +54,6 @@
                             <div class="hero-actions">
                                 <button type="button" class="btn-primary" onclick="scrollToSection('contacts')">
                                     {{ content.hero.btn_primary|default('Начать сотрудничество') }}
-                                    <span class="btn-arrow">→</span>
                                 </button>
                                 <button type="button" class="btn-secondary" onclick="scrollToSection('projects')">
                                     {{ content.hero.btn_secondary|default('Наши проекты') }}
@@ -79,7 +78,7 @@
                     <div class="about-stats">
                         {% for stat in content.about.stats|default([{'value':'10+','label':'Лет на рынке'},{'value':'1000+','label':'Довольных клиентов'},{'value':'4000+','label':'Проектов реализовано'},{'value':'95%','label':'Соблюдение сроков'}]) %}
                         <div class="about-stat">
-                            <span class="about-stat-value">{{ stat.value }}</span>
+                            <span class="about-stat-value" data-value="{{ stat.value }}">{{ stat.value }}</span>
                             <span class="about-stat-label">{{ stat.label }}</span>
                         </div>
                         {% endfor %}
@@ -267,16 +266,18 @@
                     <div class="footer-brand">
                         <div class="footer-logo-block">
                             <img src="{{ url_for('static', filename='images/logo.png') }}" alt="БК-СТРОЙ" class="footer-logo-img">
-                            <div>
+                            <!-- <div>
                                 <div class="footer-logo-title">{{ content.footer.logo_title|default('БК-СТРОЙ') }}</div>
                                 <div class="footer-logo-subtitle">{{ content.footer.logo_subtitle|default('Строительная компания') }}</div>
-                            </div>
+                            </div> -->
                         </div>
                     <p class="footer-about">{{ content.footer.about|default('Современная строительная компания, специализирующаяся на ремонте коммерческих помещений и устройстве фасадов зданий. Работаем с 2016 года.') }}</p>
                     <div class="footer-social">
-                        <a href="#" class="footer-social-link" aria-label="Facebook">f</a>
-                        <a href="#" class="footer-social-link" aria-label="Instagram">ig</a>
-                        <a href="#" class="footer-social-link" aria-label="LinkedIn">in</a>
+                        <a href="https://t.me/burenkow" target="_blank" rel="noopener noreferrer" class="footer-social-link footer-social-tg" aria-label="Telegram">
+                            <svg width="32" height="32" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+                                <path d="M11.944 0A12 12 0 0 0 0 12a12 12 0 0 0 12 12 12 12 0 0 0 12-12A12 12 0 0 0 12 0a12 12 0 0 0-.056 0zm4.962 7.224c.1-.002.321.023.465.14a.506.506 0 0 1 .171.325c.016.093.036.306.02.472-.18 1.898-.962 6.502-1.36 8.627-.168.9-.499 1.201-.82 1.23-.696.065-1.225-.46-1.9-.902-1.056-.693-1.653-1.124-2.678-1.8-1.185-.78-.417-1.21.258-1.91.177-.184 3.247-2.977 3.307-3.23.007-.032.014-.15-.056-.212s-.174-.041-.249-.024c-.106.024-1.793 1.14-5.061 3.345-.48.33-.913.49-1.302.48-.428-.008-1.252-.241-1.865-.44-.752-.245-1.349-.374-1.297-.789.027-.216.325-.437.893-.663 3.498-1.524 5.83-2.529 6.998-3.014 3.332-1.386 4.025-1.627 4.476-1.635z"/>
+                            </svg>
+                        </a>
                     </div>
                 </div>
                 <div class="footer-col">
@@ -313,8 +314,23 @@
             <button type="button" class="modal-close" id="modalClose" aria-label="Закрыть">&times;</button>
             <h2 class="modal-title" id="modalTitle"></h2>
             <p class="modal-desc"></p>
-            <div class="modal-gallery" id="modalGallery"></div>
+            <div class="modal-gallery-wrap">
+                <button type="button" class="modal-gallery-btn modal-gallery-prev" id="modalGalleryPrev" aria-label="Предыдущее фото">&lsaquo;</button>
+                <div class="modal-gallery-view" id="modalGalleryView">
+                    <img id="modalGalleryImg" src="" alt="" class="modal-gallery-main-img">
+                </div>
+                <button type="button" class="modal-gallery-btn modal-gallery-next" id="modalGalleryNext" aria-label="Следующее фото">&rsaquo;</button>
+            </div>
+            <div class="modal-gallery-thumbs" id="modalGalleryThumbs"></div>
+            <p class="modal-gallery-hint">Нажмите на фото для полноэкранного просмотра</p>
         </div>
+    </div>
+    <!-- Лайтбокс: развёрнутый просмотр с листанием -->
+    <div class="lightbox-overlay" id="lightbox" aria-hidden="true">
+        <button type="button" class="lightbox-close" id="lightboxClose" aria-label="Закрыть">&times;</button>
+        <button type="button" class="lightbox-prev" id="lightboxPrev" aria-label="Назад">&lsaquo;</button>
+        <img id="lightboxImg" src="" alt="" class="lightbox-img">
+        <button type="button" class="lightbox-next" id="lightboxNext" aria-label="Вперёд">&rsaquo;</button>
     </div>
 
     <script>window.__CATALOG__ = {{ catalog|tojson }};</script>

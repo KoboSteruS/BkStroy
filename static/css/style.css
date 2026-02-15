@@ -126,7 +126,7 @@ button {
 }
 
 .header-main {
-  padding: 1rem 0;
+  padding: 1rem;
 }
 
 .header-row {
@@ -143,7 +143,7 @@ button {
 }
 
 .logo-img {
-  height: 2.5rem;
+  height: 3rem;
   width: auto;
 }
 
@@ -199,8 +199,19 @@ button {
   display: flex;
   align-items: center;
   justify-content: center;
-  padding: 0.5rem;
+  width: 2.75rem;
+  height: 2.75rem;
+  padding: 0;
   color: var(--color-gray-700);
+  border: 2px solid var(--color-gray-300);
+  border-radius: var(--radius-xl);
+  background: white;
+  transition: border-color 0.2s, background 0.2s;
+}
+
+.mobile-menu-btn:hover {
+  border-color: var(--color-blue-400);
+  background: var(--color-gray-50);
 }
 
 @media (min-width: 768px) {
@@ -210,7 +221,8 @@ button {
 }
 
 .menu-icon {
-  font-size: 1.5rem;
+  font-size: 1.35rem;
+  line-height: 1;
 }
 
 .nav-mobile {
@@ -241,25 +253,40 @@ button {
   padding-top: 6rem;
   padding-bottom: 5rem;
   width: 100%;
+  padding-left: 1.5rem;
+  padding-right: 1.5rem;
 }
 
 @media (min-width: 1024px) {
   .hero {
-    padding-top: 5rem;
+    padding-top: 6rem;
     padding-bottom: 6rem;
+    padding-left: 3rem;
+    padding-right: 3rem;
   }
 }
 
 .hero-card {
   position: relative;
   width: 100%;
-  min-height: 36rem;
+  max-width: 80rem;
+  margin: 0 auto;
+  min-height: 32rem;
   overflow: hidden;
+  border-radius: var(--radius-2xl);
+  box-shadow: var(--shadow-2xl);
+}
+
+@media (min-width: 640px) {
+  .hero-card {
+    min-height: 36rem;
+  }
 }
 
 @media (min-width: 1024px) {
   .hero-card {
     min-height: 50rem;
+    border-radius: var(--radius-3xl);
   }
 }
 
@@ -276,7 +303,8 @@ button {
 .hero-overlay {
   position: absolute;
   inset: 0;
-  background: linear-gradient(to right, rgba(249, 250, 251, 0.97) 0%, rgba(249, 250, 251, 0.85) 40%, rgba(255, 255, 255, 0.4) 70%, transparent 100%);
+  /* Фото выразительнее: лёгкий градиент только слева для читаемости текста, остальное — фото */
+  background: linear-gradient(to right, rgba(255, 255, 255, 0.82) 0%, rgba(255, 255, 255, 0.35) 28%, rgba(255, 255, 255, 0.08) 55%, transparent 78%);
   z-index: 1;
 }
 
@@ -284,10 +312,18 @@ button {
   position: relative;
   z-index: 2;
   display: grid;
-  gap: 2rem;
+  gap: 1.5rem;
   align-items: center;
-  padding: 2rem 0;
-  min-height: 36rem;
+  padding: 1.5rem 0 2rem;
+  min-height: 30rem;
+}
+
+@media (min-width: 640px) {
+  .hero-grid {
+    gap: 2rem;
+    padding: 2rem 0;
+    min-height: 36rem;
+  }
 }
 
 @media (min-width: 1024px) {
@@ -314,12 +350,18 @@ button {
 }
 
 .hero-title {
-  font-size: 2.5rem;
+  font-size: 2rem;
   font-weight: 700;
-  line-height: 1.1;
+  line-height: 1.15;
   letter-spacing: -0.025em;
   color: var(--color-gray-900);
-  margin-bottom: 1rem;
+  margin-bottom: 0.875rem;
+}
+
+@media (min-width: 640px) {
+  .hero-title {
+    font-size: 2.5rem;
+  }
 }
 
 @media (min-width: 1024px) {
@@ -330,9 +372,9 @@ button {
 
 .hero-desc {
   color: var(--color-gray-600);
-  font-size: 1rem;
+  font-size: 0.9375rem;
   max-width: 28rem;
-  margin-bottom: 1.5rem;
+  margin-bottom: 1.25rem;
   line-height: 1.6;
 }
 
@@ -345,12 +387,13 @@ button {
 .hero-actions {
   display: flex;
   flex-direction: column;
-  gap: 1rem;
+  gap: 0.75rem;
 }
 
 @media (min-width: 640px) {
   .hero-actions {
     flex-direction: row;
+    gap: 1rem;
   }
 }
 
@@ -363,7 +406,7 @@ button {
   color: white;
   padding: 1rem 2rem;
   border-radius: 9999px;
-  font-size: 0.875rem;
+  font-size: 1rem;
   font-weight: 500;
   box-shadow: var(--shadow-lg);
   transition: all 0.2s;
@@ -593,6 +636,12 @@ button {
   background: linear-gradient(135deg, var(--color-gray-50), rgba(239, 246, 255, 0.3));
 }
 
+@media (max-width: 767px) {
+  .projects {
+    padding: 3.5rem 0 4rem;
+  }
+}
+
 .projects-layout {
   display: flex;
   flex-direction: column;
@@ -690,17 +739,37 @@ button {
 
 .projects-content {
   flex: 1;
+  min-width: 0;
 }
 
+/* Карусель: на всех экранах видно только один объект, остальные — скроллом */
 .projects-cards {
-  display: grid;
-  grid-template-columns: 1fr;
+  display: flex;
+  flex-wrap: nowrap;
+  overflow-x: auto;
+  overflow-y: hidden;
+  scroll-snap-type: x mandatory;
+  -webkit-overflow-scrolling: touch;
   gap: 1.5rem;
+  padding-bottom: 0.5rem;
+}
+
+.projects-cards .project-card {
+  flex: 0 0 100%;
+  scroll-snap-align: center;
+  scroll-snap-stop: always;
+}
+
+@media (max-width: 767px) {
+  .projects-cards {
+    padding: 0 1.5rem 0.5rem;
+  }
 }
 
 @media (min-width: 768px) {
-  .projects-cards {
-    grid-template-columns: repeat(3, 1fr);
+  .projects .container {
+    padding-left: 2rem;
+    padding-right: 2rem;
   }
 }
 
@@ -718,6 +787,12 @@ button {
   transition: box-shadow 0.3s;
 }
 
+@media (min-width: 768px) {
+  .project-card-image-wrap {
+    border-radius: var(--radius-3xl);
+  }
+}
+
 .project-card:hover .project-card-image-wrap {
   box-shadow: var(--shadow-2xl);
 }
@@ -727,6 +802,12 @@ button {
   height: 18rem;
   object-fit: cover;
   transition: transform 0.5s;
+}
+
+@media (max-width: 767px) {
+  .project-card-image {
+    height: 14rem;
+  }
 }
 
 .project-card:hover .project-card-image {
@@ -1298,6 +1379,18 @@ a.contact-info-value:hover {
   background: var(--color-blue);
 }
 
+/* Одна большая иконка Telegram */
+.footer-social-tg {
+  width: 3.5rem;
+  height: 3.5rem;
+  color: white;
+}
+
+.footer-social-tg:hover {
+  background: #0088cc;
+  color: white;
+}
+
 .footer-col-title {
   font-size: 1.125rem;
   font-weight: 600;
@@ -1389,12 +1482,19 @@ a.contact-info-value:hover {
 .modal {
   position: relative;
   background: white;
-  border-radius: var(--radius-2xl);
+  border-radius: var(--radius-3xl);
   max-width: 42rem;
   max-height: 90vh;
   overflow-y: auto;
-  padding: 2rem 2rem 2.5rem;
+  padding: 2rem 2.25rem 2.5rem;
   box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
+}
+
+@media (max-width: 640px) {
+  .modal {
+    padding: 1.5rem 1.5rem 2rem;
+    margin: 1rem;
+  }
 }
 
 .modal-close {
@@ -1434,15 +1534,160 @@ a.contact-info-value:hover {
   margin-bottom: 1.5rem;
 }
 
-.modal-gallery {
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(10rem, 1fr));
+.modal-gallery-wrap {
+  display: flex;
+  align-items: center;
   gap: 0.75rem;
+  margin-bottom: 1rem;
 }
 
-.modal-gallery-img {
+.modal-gallery-view {
+  flex: 1;
+  min-width: 0;
+  border-radius: var(--radius-xl);
+  overflow: hidden;
+  background: var(--color-gray-100);
+  cursor: pointer;
+}
+
+.modal-gallery-main-img {
   width: 100%;
   aspect-ratio: 4/3;
   object-fit: cover;
+  display: block;
+  border-radius: var(--radius-xl);
+}
+
+.modal-gallery-btn {
+  flex-shrink: 0;
+  width: 2.5rem;
+  height: 2.5rem;
+  border-radius: 50%;
+  border: 2px solid var(--color-gray-200);
+  background: white;
+  color: var(--color-gray-600);
+  font-size: 1.25rem;
+  line-height: 1;
+  cursor: pointer;
+  transition: border-color 0.2s, background 0.2s, color 0.2s;
+}
+
+.modal-gallery-btn:hover {
+  border-color: var(--color-blue);
+  background: var(--color-blue-50);
+  color: var(--color-blue);
+}
+
+.modal-gallery-prev { padding-right: 0.1em; }
+.modal-gallery-next { padding-left: 0.1em; }
+
+.modal-gallery-thumbs {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  margin-bottom: 0.75rem;
+}
+
+.modal-gallery-thumb {
+  padding: 0;
+  border: none;
   border-radius: var(--radius-lg);
+  overflow: hidden;
+  width: 4rem;
+  height: 3rem;
+  background: var(--color-gray-100);
+  cursor: pointer;
+  opacity: 0.7;
+  transition: opacity 0.2s, box-shadow 0.2s;
+}
+
+.modal-gallery-thumb:hover,
+.modal-gallery-thumb.active {
+  opacity: 1;
+  box-shadow: 0 0 0 2px var(--color-blue);
+}
+
+.modal-gallery-thumb img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+.modal-gallery-hint {
+  font-size: 0.8125rem;
+  color: var(--color-gray-500);
+  margin: 0;
+}
+
+/* Лайтбокс: развёрнутый просмотр */
+.lightbox-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.92);
+  z-index: 110;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 3rem 4rem;
+  opacity: 0;
+  visibility: hidden;
+  transition: opacity 0.25s, visibility 0.25s;
+}
+
+.lightbox-overlay.lightbox-open {
+  opacity: 1;
+  visibility: visible;
+}
+
+.lightbox-img {
+  max-width: 100%;
+  max-height: 100%;
+  object-fit: contain;
+  border-radius: var(--radius-lg);
+}
+
+.lightbox-close {
+  position: absolute;
+  top: 1rem;
+  right: 1rem;
+  width: 3rem;
+  height: 3rem;
+  border: none;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.15);
+  color: white;
+  font-size: 1.75rem;
+  line-height: 1;
+  cursor: pointer;
+  transition: background 0.2s;
+}
+
+.lightbox-close:hover {
+  background: rgba(255, 255, 255, 0.25);
+}
+
+.lightbox-prev,
+.lightbox-next {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 3rem;
+  height: 3rem;
+  border: none;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.15);
+  color: white;
+  font-size: 2rem;
+  line-height: 1;
+  cursor: pointer;
+  transition: background 0.2s;
+}
+
+.lightbox-prev { left: 1rem; }
+.lightbox-next { right: 1rem; }
+
+.lightbox-prev:hover,
+.lightbox-next:hover {
+  background: rgba(255, 255, 255, 0.3);
 }
