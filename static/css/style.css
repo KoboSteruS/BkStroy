@@ -742,35 +742,36 @@ button {
   min-width: 0;
 }
 
-/* По умолчанию: сетка (1 колонка на мобилке, 3 на десктопе). Карусель только если объектов больше 3 */
+/* Общее */
 .projects-cards {
-  display: grid;
-  grid-template-columns: 1fr;
   gap: 1.5rem;
 }
 
-@media (min-width: 768px) {
-  .projects-cards {
-    grid-template-columns: repeat(3, 1fr);
-    display: grid;
-  }
-}
-
-/* Карусель (один объект, скролл) — только когда объектов больше 3 */
+/* Мобилка: всегда карусель — виден только 1 объект, остальные листаются */
 @media (max-width: 767px) {
-  .projects-cards--carousel {
+  .projects-cards {
     display: flex;
     flex-wrap: nowrap;
     overflow-x: auto;
     overflow-y: hidden;
     scroll-snap-type: x mandatory;
     -webkit-overflow-scrolling: touch;
+    gap: 1.5rem;
     padding: 0 1.5rem 0.5rem;
   }
-  .projects-cards--carousel .project-card {
+  .projects-cards .project-card {
     flex: 0 0 100%;
+    min-width: 0;
     scroll-snap-align: center;
     scroll-snap-stop: always;
+  }
+}
+
+/* Десктоп: по умолчанию сетка 3 колонки; карусель только если объектов больше 3 */
+@media (min-width: 768px) {
+  .projects-cards {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
   }
 }
 
