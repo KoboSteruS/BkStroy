@@ -742,27 +742,53 @@ button {
   min-width: 0;
 }
 
-/* Карусель: на всех экранах видно только один объект, остальные — скроллом */
+/* По умолчанию: сетка (1 колонка на мобилке, 3 на десктопе). Карусель только если объектов больше 3 */
 .projects-cards {
-  display: flex;
-  flex-wrap: nowrap;
-  overflow-x: auto;
-  overflow-y: hidden;
-  scroll-snap-type: x mandatory;
-  -webkit-overflow-scrolling: touch;
+  display: grid;
+  grid-template-columns: 1fr;
   gap: 1.5rem;
-  padding-bottom: 0.5rem;
 }
 
-.projects-cards .project-card {
-  flex: 0 0 100%;
-  scroll-snap-align: center;
-  scroll-snap-stop: always;
-}
-
-@media (max-width: 767px) {
+@media (min-width: 768px) {
   .projects-cards {
+    grid-template-columns: repeat(3, 1fr);
+    display: grid;
+  }
+}
+
+/* Карусель (один объект, скролл) — только когда объектов больше 3 */
+@media (max-width: 767px) {
+  .projects-cards--carousel {
+    display: flex;
+    flex-wrap: nowrap;
+    overflow-x: auto;
+    overflow-y: hidden;
+    scroll-snap-type: x mandatory;
+    -webkit-overflow-scrolling: touch;
     padding: 0 1.5rem 0.5rem;
+  }
+  .projects-cards--carousel .project-card {
+    flex: 0 0 100%;
+    scroll-snap-align: center;
+    scroll-snap-stop: always;
+  }
+}
+
+@media (min-width: 768px) {
+  .projects-cards--carousel {
+    display: flex;
+    flex-wrap: nowrap;
+    overflow-x: auto;
+    overflow-y: hidden;
+    scroll-snap-type: x mandatory;
+    -webkit-overflow-scrolling: touch;
+    gap: 1.5rem;
+    padding-bottom: 0.5rem;
+  }
+  .projects-cards--carousel .project-card {
+    flex: 0 0 100%;
+    scroll-snap-align: center;
+    scroll-snap-stop: always;
   }
 }
 

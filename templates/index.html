@@ -112,7 +112,7 @@
                         </div>
                     </div>
                     <div class="projects-content">
-                        <div class="projects-cards" id="projectsCards">
+                        <div class="projects-cards {% if catalog|length > 3 %}projects-cards--carousel{% endif %}" id="projectsCards">
                             {% for item in catalog %}
                             <article class="project-card" data-project="{{ item.id }}">
                                 <div class="project-card-image-wrap">
