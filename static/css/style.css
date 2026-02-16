@@ -37,6 +37,8 @@ html {
 
 body {
   font-family: "Nunito Sans", ui-sans-serif, system-ui, sans-serif;
+  font-size: 1.125rem;
+  font-weight: 600;
   line-height: 1.5;
   color: var(--color-gray-700);
   background-color: var(--color-gray-50);
@@ -100,7 +102,7 @@ button {
   display: none;
   align-items: center;
   gap: 2rem;
-  font-size: 0.875rem;
+  font-size: 1rem;
 }
 
 @media (min-width: 1024px) {
@@ -156,7 +158,7 @@ button {
 
 .logo-subtitle {
   display: block;
-  font-size: 0.75rem;
+  font-size: 1rem;
   color: var(--color-gray-500);
 }
 
@@ -187,7 +189,7 @@ button {
   color: white;
   padding: 0.5rem 1.5rem;
   border-radius: 9999px;
-  font-size: 0.875rem;
+  font-size: 1rem;
   transition: background 0.2s;
 }
 
@@ -240,7 +242,7 @@ button {
 .nav-link-mobile {
   color: var(--color-gray-600);
   text-align: left;
-  font-size: 0.875rem;
+  font-size: 1rem;
   padding: 0.25rem 0;
 }
 
@@ -372,7 +374,7 @@ button {
 
 .hero-desc {
   color: var(--color-gray-600);
-  font-size: 0.9375rem;
+  font-size: 1rem;
   max-width: 28rem;
   margin-bottom: 1.25rem;
   line-height: 1.6;
@@ -433,7 +435,7 @@ button {
   color: var(--color-gray-900);
   padding: 1rem 2rem;
   border-radius: 9999px;
-  font-size: 0.875rem;
+  font-size: 1rem;
   box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
   transition: all 0.2s;
 }
@@ -493,7 +495,7 @@ button {
 }
 
 .hero-float-label {
-  font-size: 0.875rem;
+  font-size: 1rem;
   color: var(--color-gray-600);
 }
 
@@ -581,7 +583,7 @@ button {
 }
 
 .about-stat-label {
-  font-size: 0.875rem;
+  font-size: 1rem;
   color: var(--color-gray-600);
 }
 
@@ -590,7 +592,7 @@ button {
 }
 
 .partners-title {
-  font-size: 0.875rem;
+  font-size: 1rem;
   color: var(--color-gray-500);
   margin-bottom: 2rem;
   text-align: center;
@@ -881,7 +883,7 @@ button {
 }
 
 .project-card-desc {
-  font-size: 0.875rem;
+  font-size: 1rem;
   color: var(--color-gray-600);
 }
 
@@ -986,7 +988,7 @@ button {
 }
 
 .process-circle-sub {
-  font-size: 0.875rem;
+  font-size: 1rem;
   opacity: 0.9;
 }
 
@@ -1145,7 +1147,7 @@ button {
 }
 
 .principle-text {
-  font-size: 0.9375rem;
+  font-size: 1rem;
   color: var(--color-gray-600);
   line-height: 1.5;
   margin-bottom: 1.5rem;
@@ -1161,7 +1163,7 @@ button {
 }
 
 .principle-benefit-label {
-  font-size: 0.8125rem;
+  font-size: 1rem;
   opacity: 0.95;
   margin-bottom: 0.35rem;
 }
@@ -1228,7 +1230,7 @@ button {
 }
 
 .form-label {
-  font-size: 0.875rem;
+  font-size: 1rem;
   font-weight: 500;
   color: var(--color-gray-700);
   margin-bottom: 0.5rem;
@@ -1315,7 +1317,7 @@ button {
 }
 
 .contact-info-label {
-  font-size: 0.875rem;
+  font-size: 1rem;
   color: var(--color-gray-500);
   margin-bottom: 0.25rem;
 }
@@ -1373,12 +1375,12 @@ a.contact-info-value:hover {
 }
 
 .footer-logo-subtitle {
-  font-size: 0.875rem;
+  font-size: 1rem;
   color: var(--color-gray-400);
 }
 
 .footer-about {
-  font-size: 0.875rem;
+  font-size: 1rem;
   color: var(--color-gray-400);
   line-height: 1.6;
   max-width: 28rem;
@@ -1398,7 +1400,7 @@ a.contact-info-value:hover {
   display: flex;
   align-items: center;
   justify-content: center;
-  font-size: 0.875rem;
+  font-size: 1rem;
   transition: background 0.2s;
 }
 
@@ -1432,7 +1434,7 @@ a.contact-info-value:hover {
 .footer-links li,
 .footer-services li {
   margin-bottom: 0.75rem;
-  font-size: 0.875rem;
+  font-size: 1rem;
 }
 
 .footer-links a {
@@ -1467,14 +1469,14 @@ a.contact-info-value:hover {
 }
 
 .footer-copy {
-  font-size: 0.875rem;
+  font-size: 1rem;
   color: var(--color-gray-400);
 }
 
 .footer-legal {
   display: flex;
   gap: 1.5rem;
-  font-size: 0.875rem;
+  font-size: 1rem;
 }
 
 .footer-legal a {
@@ -1642,7 +1644,7 @@ a.contact-info-value:hover {
 }
 
 .modal-gallery-hint {
-  font-size: 0.8125rem;
+  font-size: 1rem;
   color: var(--color-gray-500);
   margin: 0;
 }
