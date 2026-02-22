@@ -300,10 +300,10 @@
                 </div>
             </div>
             <div class="footer-bottom">
-                <p class="footer-copy">© <span id="currentYear"></span> {{ content.footer.copy|default('БК-СТРОЙ. Все права защищены.') }}</p>
+                <p class="footer-copy">© <span id="currentYear"></span> {{ content.footer.get('copy', 'БК-СТРОЙ. Все права защищены.') }}</p>
                 <div class="footer-legal">
-                    <a href="#">Политика конфиденциальности</a>
-                    <a href="#">Условия использования</a>
+                    <a href="{{ url_for('privacy') }}">Политика конфиденциальности</a>
+                    <a href="{{ url_for('terms') }}">Условия использования</a>
                 </div>
             </div>
         </div>
@@ -334,7 +334,41 @@
         <button type="button" class="lightbox-next" id="lightboxNext" aria-label="Вперёд">&rsaquo;</button>
     </div>
 
+    <!-- Плашка «Создано командой АТИИ» (внизу экрана) -->
+    <div class="credit-bar">
+        <span class="credit-bar-text">Создано командой <a href="https://tech.at-ii.ru/" target="_blank" rel="noopener noreferrer" class="credit-bar-link">АТИИ</a></span>
+    </div>
+
+    <!-- Плашка об использовании cookie -->
+    <div class="cookie-consent" id="cookieConsent" role="dialog" aria-labelledby="cookieConsentTitle" aria-describedby="cookieConsentDesc">
+        <div class="cookie-consent-inner">
+            <p class="cookie-consent-text" id="cookieConsentDesc">
+                <span id="cookieConsentTitle">Мы используем файлы cookie</span> для работы сайта и удобства пользователей. Продолжая пользоваться сайтом, вы соглашаетесь с нашей <a href="{{ url_for('privacy') }}">Политикой конфиденциальности</a>.
+            </p>
+            <div class="cookie-consent-actions">
+                <a href="{{ url_for('terms') }}" class="cookie-consent-btn cookie-consent-btn--link">Условия использования</a>
+                <button type="button" class="cookie-consent-btn cookie-consent-btn--accept" id="cookieConsentAccept">Принять</button>
+            </div>
+        </div>
+    </div>
+
     <script>window.__CATALOG__ = {{ catalog|tojson }};</script>
     <script src="{{ url_for('static', filename='js/main.js') }}"></script>
+    <script>
+        (function() {
+            var KEY = 'cookie_consent_accepted';
+            var banner = document.getElementById('cookieConsent');
+            var btn = document.getElementById('cookieConsentAccept');
+            if (banner && !localStorage.getItem(KEY)) {
+                banner.classList.add('cookie-consent--visible');
+            }
+            if (btn) {
+                btn.addEventListener('click', function() {
+                    localStorage.setItem(KEY, '1');
+                    banner.classList.remove('cookie-consent--visible');
+                });
+            }
+        })();
+    </script>
 </body>
 </html>

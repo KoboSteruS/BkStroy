@@ -100,6 +100,21 @@ def contact():
     data = request.get_json()
     return jsonify({'success': True, 'message': 'Спасибо за заявку! Мы свяжемся с вами в ближайшее время.'})
 
+
+@app.route('/privacy')
+def privacy():
+    """Страница «Политика конфиденциальности»."""
+    content = load_site_content()
+    return render_template('privacy.html', content=content)
+
+
+@app.route('/terms')
+def terms():
+    """Страница «Условия использования»."""
+    content = load_site_content()
+    return render_template('terms.html', content=content)
+
+
 # --- Вход в админку по ссылке /{token}/admin ---
 @app.route('/<token>/admin')
 def admin_login(token):

@@ -259,6 +259,12 @@ button {
   padding-right: 1.5rem;
 }
 
+@media (max-width: 767px) {
+  .hero {
+    padding-bottom: calc(2rem + env(safe-area-inset-bottom, 0px));
+  }
+}
+
 @media (min-width: 1024px) {
   .hero {
     padding-top: 6rem;
@@ -318,6 +324,13 @@ button {
   align-items: center;
   padding: 1.5rem 0 2rem;
   min-height: 30rem;
+}
+
+@media (max-width: 767px) {
+  .hero-grid {
+    padding: 1.25rem 0 2.5rem;
+    min-height: 0;
+  }
 }
 
 @media (min-width: 640px) {
@@ -515,6 +528,16 @@ button {
   }
 }
 
+main {
+  padding-bottom: 2.75rem; /* место под плашку «Создано командой АТИИ» */
+}
+
+@media (max-width: 767px) {
+  main {
+    padding-bottom: calc(2.75rem + 2rem + env(safe-area-inset-bottom, 0px));
+  }
+}
+
 /* ----- About ----- */
 .about {
   padding: 3rem 0;
@@ -546,25 +569,49 @@ button {
 }
 
 .about-advantages {
-  
   list-style: none;
   display: grid;
-  grid-template-columns: repeat(2, 1fr);
+  grid-template-columns: repeat(2, minmax(0, 1fr));
   grid-template-rows: repeat(2, auto);
-  gap: 3rem 5rem;
+  gap: 1.5rem 2rem;
   margin: 0;
   padding: 0;
-  padding-top: 75px;
+}
+
+@media (min-width: 768px) {
+  .about-advantages {
+    gap: 2rem 3rem;
+  }
+}
+
+@media (min-width: 1024px) {
+  .about-advantages {
+    gap: 3rem 5rem;
+  }
 }
 
 .about-advantages li {
   display: flex;
   align-items: flex-start;
-  gap: 1rem;
-  font-size: 1.55rem;
+  gap: 0.75rem;
+  font-size: 1.125rem;
   font-weight: 500;
   line-height: 1.4;
   color: var(--color-gray-800);
+  min-width: 0;
+}
+
+@media (min-width: 768px) {
+  .about-advantages li {
+    font-size: 1.25rem;
+    gap: 1rem;
+  }
+}
+
+@media (min-width: 1024px) {
+  .about-advantages li {
+    font-size: 1.55rem;
+  }
 }
 
 .about-check {
@@ -1766,4 +1813,187 @@ a.contact-info-value:hover {
 .lightbox-prev:hover,
 .lightbox-next:hover {
   background: rgba(255, 255, 255, 0.3);
+}
+
+/* ----- Страницы соглашений ----- */
+.legal-page {
+  padding: 6rem 0 6.75rem;
+  min-height: 100vh;
+}
+
+.legal-content {
+  max-width: 50rem;
+  margin: 0 auto;
+}
+
+.legal-title {
+  font-size: 2rem;
+  font-weight: 700;
+  color: var(--color-gray-900);
+  margin-bottom: 0.5rem;
+}
+
+@media (min-width: 768px) {
+  .legal-title {
+    font-size: 2.5rem;
+  }
+}
+
+.legal-updated {
+  font-size: 0.9375rem;
+  color: var(--color-gray-500);
+  margin-bottom: 2.5rem;
+}
+
+.legal-section {
+  margin-bottom: 2rem;
+}
+
+.legal-section h2 {
+  font-size: 1.25rem;
+  font-weight: 600;
+  color: var(--color-gray-800);
+  margin-bottom: 0.75rem;
+}
+
+.legal-section p {
+  font-size: 1rem;
+  font-weight: 500;
+  line-height: 1.7;
+  color: var(--color-gray-600);
+}
+
+.legal-back {
+  margin-top: 3rem;
+  padding-top: 2rem;
+  border-top: 1px solid var(--color-gray-200);
+}
+
+.legal-back a {
+  color: var(--color-blue);
+  font-weight: 600;
+}
+
+.legal-back a:hover {
+  text-decoration: underline;
+}
+
+/* ----- Плашка об использовании cookie ----- */
+/* Плашка «Создано командой АТИИ» — всегда внизу */
+.credit-bar {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  z-index: 99;
+  background: var(--color-gray-900);
+  color: rgba(255, 255, 255, 0.85);
+  padding: 0.5rem 1rem;
+  padding-bottom: calc(0.5rem + env(safe-area-inset-bottom, 0px));
+  text-align: center;
+  font-size: 0.875rem;
+  font-weight: 500;
+}
+
+.credit-bar-text {
+  display: inline-block;
+}
+
+.credit-bar-link {
+  color: #ef4444;
+  font-weight: 600;
+  text-decoration: none;
+}
+
+.credit-bar-link:hover {
+  color: #f87171;
+  text-decoration: underline;
+}
+
+.cookie-consent {
+  position: fixed;
+  bottom: 2.75rem;
+  left: 0;
+  right: 0;
+  z-index: 100;
+  background: var(--color-gray-900);
+  color: white;
+  padding: 1rem 1.5rem;
+  padding-bottom: calc(1rem + env(safe-area-inset-bottom, 0px));
+  box-shadow: 0 -4px 20px rgba(0, 0, 0, 0.2);
+  transform: translateY(calc(100% + 2.75rem));
+  transition: transform 0.3s ease;
+}
+
+.cookie-consent.cookie-consent--visible {
+  transform: translateY(0);
+}
+
+.cookie-consent-inner {
+  max-width: 80rem;
+  margin: 0 auto;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 1rem;
+  padding: 0 1.5rem;
+}
+
+@media (min-width: 768px) {
+  .cookie-consent-inner {
+    padding: 0 3rem;
+  }
+}
+
+.cookie-consent-text {
+  flex: 1;
+  min-width: 0;
+  font-size: 0.9375rem;
+  font-weight: 500;
+  line-height: 1.5;
+  color: rgba(255, 255, 255, 0.9);
+}
+
+.cookie-consent-text a {
+  color: var(--color-blue-400);
+  text-decoration: underline;
+}
+
+.cookie-consent-text a:hover {
+  color: white;
+}
+
+.cookie-consent-actions {
+  display: flex;
+  flex-shrink: 0;
+  gap: 0.75rem;
+}
+
+.cookie-consent-btn {
+  padding: 0.5rem 1.25rem;
+  border-radius: var(--radius-lg);
+  font-size: 0.9375rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background 0.2s, color 0.2s;
+  border: none;
+}
+
+.cookie-consent-btn--accept {
+  background: var(--color-blue);
+  color: white;
+}
+
+.cookie-consent-btn--accept:hover {
+  background: var(--color-blue-700);
+}
+
+.cookie-consent-btn--link {
+  background: transparent;
+  color: rgba(255, 255, 255, 0.9);
+}
+
+.cookie-consent-btn--link:hover {
+  color: white;
+  background: rgba(255, 255, 255, 0.1);
 }

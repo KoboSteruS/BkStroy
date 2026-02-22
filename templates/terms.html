@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Условия использования — БК-СТРОЙ</title>
+    <link rel="icon" type="image/x-icon" href="{{ url_for('static', filename='images/logo.ico') }}">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Nunito+Sans:ital,opsz,wght@0,6..12,400;0,6..12,500;0,6..12,600;0,6..12,700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+<body class="page">
+    <header class="header">
+        <div class="container header-main">
+            <div class="header-row">
+                <a href="{{ url_for('index') }}" class="logo-block">
+                    <img src="{{ url_for('static', filename='images/logo.png') }}" alt="БК-СТРОЙ" class="logo-img">
+                </a>
+                <nav class="nav-desktop">
+                    <a href="{{ url_for('index') }}#about" class="nav-link">О нас</a>
+                    <a href="{{ url_for('index') }}#projects" class="nav-link">Объекты</a>
+                    <a href="{{ url_for('index') }}#process" class="nav-link">Услуги</a>
+                    <a href="{{ url_for('index') }}#contacts" class="btn-nav-cta">Связаться</a>
+                </nav>
+                <a href="{{ url_for('index') }}" class="mobile-menu-btn" aria-label="На главную">☰</a>
+            </div>
+        </div>
+    </header>
+
+    <main class="legal-page">
+        <div class="container">
+            <article class="legal-content">
+                <h1 class="legal-title">Условия использования</h1>
+                <p class="legal-updated">Последнее обновление: 2026 год.</p>
+
+                <section class="legal-section">
+                    <h2>1. Принятие условий</h2>
+                    <p>Использование сайта БК-СТРОЙ (далее — Сайт) означает согласие с настоящими Условиями использования. Если вы не согласны с ними, пожалуйста, не пользуйтесь Сайтом.</p>
+                </section>
+
+                <section class="legal-section">
+                    <h2>2. Использование Сайта</h2>
+                    <p>Сайт предназначен для ознакомления с услугами компании, направления заявок и получения информации. Запрещается использовать Сайт в незаконных целях, распространять вредоносное ПО, нарушать работу Сайта или права третьих лиц.</p>
+                </section>
+
+                <section class="legal-section">
+                    <h2>3. Интеллектуальная собственность</h2>
+                    <p>Все материалы Сайта (тексты, изображения, логотипы, дизайн) являются объектами интеллектуальной собственности и защищены законодательством. Копирование и использование без разрешения правообладателя не допускается.</p>
+                </section>
+
+                <section class="legal-section">
+                    <h2>4. Заявки и контакты</h2>
+                    <p>Отправка заявки через форму на Сайте не создаёт обязательного договора. Мы свяжемся с вами для уточнения деталей. Точные условия сотрудничества определяются отдельным договором.</p>
+                </section>
+
+                <section class="legal-section">
+                    <h2>5. Ограничение ответственности</h2>
+                    <p>Мы стремимся поддерживать актуальность информации на Сайте, однако не гарантируем её полноту и точность. Сайт предоставляется «как есть». Мы не несём ответственности за косвенные убытки, связанные с использованием Сайта.</p>
+                </section>
+
+                <section class="legal-section">
+                    <h2>6. Ссылки на сторонние сайты</h2>
+                    <p>Сайт может содержать ссылки на внешние ресурсы. Мы не контролируем содержание этих сайтов и не несём за них ответственности.</p>
+                </section>
+
+                <section class="legal-section">
+                    <h2>7. Изменения условий</h2>
+                    <p>Мы вправе изменять настоящие Условия. Актуальная версия публикуется на этой странице. Продолжение использования Сайта после публикации изменений означает принятие новых условий.</p>
+                </section>
+
+                <p class="legal-back"><a href="{{ url_for('index') }}">← Вернуться на главную</a></p>
+            </article>
+        </div>
+    </main>
+
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-bottom" style="padding-top: 1.5rem;">
+                <p class="footer-copy">© <span id="currentYear"></span> {{ ((content.get('footer') or {}).get('copy') or 'БК-СТРОЙ. Все права защищены.') if content else 'БК-СТРОЙ. Все права защищены.' }}</p>
+                <div class="footer-legal">
+                    <a href="{{ url_for('privacy') }}">Политика конфиденциальности</a>
+                    <a href="{{ url_for('terms') }}">Условия использования</a>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <div class="credit-bar">
+        <span class="credit-bar-text">Создано командой <a href="https://tech.at-ii.ru/" target="_blank" rel="noopener noreferrer" class="credit-bar-link">АТИИ</a></span>
+    </div>
+
+    <script>
+        document.getElementById('currentYear').textContent = new Date().getFullYear();
+    </script>
+</body>
+</html>
