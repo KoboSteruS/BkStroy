@@ -142,14 +142,22 @@
 
         <!-- Process (Как мы работаем) -->
         <section id="process" class="process">
-            <div class="container">
-                <h2 class="section-heading process-heading">{{ content.process.heading|default('Как мы работаем') }}</h2>
+            <div class="container process-container">
+                <div class="process-header-row">
+                    <h2 class="section-heading process-heading">{{ content.process.heading|default('Как мы работаем') }}</h2>
+                    <div class="process-circle-wrap process-circle-wrap--mobile">
+                        <button type="button" class="process-circle process-circle--mobile" onclick="scrollToSection('contacts')" aria-label="Бесплатная консультация и расчёт стоимости — перейти к форме">
+                            <span class="process-circle-title">{{ content.process.circle_title|default('Бесплатная консультация') }}</span>
+                            <span class="process-circle-sub">{{ content.process.circle_sub|default('и расчёт стоимости') }}</span>
+                        </button>
+                    </div>
+                </div>
 
                 <div class="process-layout">
                     <div class="process-media">
                         <div class="process-image-wrap">
                             <img src="https://images.unsplash.com/photo-1552835376-89b8cdfacb4d?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&q=80&w=1080" alt="Процесс работы" class="process-image">
-                            <button type="button" class="process-circle" onclick="scrollToSection('contacts')" aria-label="Бесплатная консультация и расчёт стоимости — перейти к форме">
+                            <button type="button" class="process-circle process-circle--desktop" onclick="scrollToSection('contacts')" aria-label="Бесплатная консультация и расчёт стоимости — перейти к форме">
                                 <span class="process-circle-title">{{ content.process.circle_title|default('Бесплатная консультация') }}</span>
                                 <span class="process-circle-sub">{{ content.process.circle_sub|default('и расчёт стоимости') }}</span>
                             </button>

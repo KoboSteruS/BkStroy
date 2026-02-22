@@ -395,6 +395,17 @@ button {
   text-shadow: 0 1px 2px rgba(255, 255, 255, 0.8);
 }
 
+@media (max-width: 767px) {
+  .hero-desc {
+    background: rgba(255, 255, 255, 0.82);
+    padding: 0.75rem 1rem;
+    border-radius: var(--radius-lg);
+    margin-right: 0;
+    -webkit-backdrop-filter: blur(6px);
+    backdrop-filter: blur(6px);
+  }
+}
+
 @media (min-width: 1024px) {
   .hero-desc {
     font-size: 1.125rem;
@@ -528,13 +539,9 @@ button {
   }
 }
 
-main {
-  padding-bottom: 2.75rem; /* место под плашку «Создано командой АТИИ» */
-}
-
 @media (max-width: 767px) {
   main {
-    padding-bottom: calc(2.75rem + 2rem + env(safe-area-inset-bottom, 0px));
+    padding-bottom: calc(2rem + env(safe-area-inset-bottom, 0px));
   }
 }
 
@@ -576,6 +583,7 @@ main {
   gap: 1.5rem 2rem;
   margin: 0;
   padding: 0;
+  padding-top: 100px;
 }
 
 @media (min-width: 768px) {
@@ -963,6 +971,7 @@ main {
   margin-bottom: 4rem;
 }
 
+
 .process-layout {
   display: grid;
   gap: 3rem;
@@ -979,6 +988,84 @@ main {
 
 .process-media {
   min-height: 26rem;
+}
+
+/* Строка заголовок + кнопка на мобильных */
+.process-header-row {
+  display: block;
+}
+
+@media (max-width: 1023px) {
+  .process-header-row {
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+    gap: 0.75rem;
+    margin-bottom: 1.5rem;
+  }
+  .process-heading {
+    margin-bottom: 0;
+    flex: 1 1 0;
+    min-width: 9em;
+  }
+}
+
+/* Обёртка кнопки справа от заголовка — только на мобильных */
+.process-circle-wrap--mobile {
+  display: none;
+  flex-shrink: 0;
+}
+
+@media (max-width: 1023px) {
+  .process-circle-wrap--mobile {
+    display: block;
+    position: relative;
+    right: 93px;
+    top: 50px;
+    /* top не используем: % зависит от высоты родителя, которая меняется после загрузки шрифтов — из-за этого кнопка съезжает. Вертикаль задаётся flex align-items: center у .process-header-row */
+  }
+  .process-circle--desktop {
+    display: none !important;
+  }
+  .process-media {
+    min-height: 0;
+  }
+  .process-image-wrap {
+    display: none;
+  }
+  .process-image-wrap::before,
+  .process-image-wrap::after {
+    display: none;
+  }
+  .process-image {
+    display: none;
+  }
+  .process-circle-wrap--mobile .process-circle,
+  .process-circle--mobile {
+    position: relative;
+    transform: none;
+    margin: 0;
+    width: 5.5rem;
+    height: 5.5rem;
+    padding: 0.5rem;
+  }
+  .process-circle-wrap--mobile .process-circle-title,
+  .process-circle--mobile .process-circle-title {
+    font-size: 0.6875rem;
+    line-height: 1.15;
+  }
+  .process-circle-wrap--mobile .process-circle-sub,
+  .process-circle--mobile .process-circle-sub {
+    font-size: 0.625rem;
+  }
+  .process-circle-wrap--mobile .process-circle:hover,
+  .process-circle--mobile:hover {
+    transform: scale(1.05);
+  }
+  .process-circle-wrap--mobile .process-circle:active,
+  .process-circle--mobile:active {
+    transform: scale(0.98);
+  }
 }
 
 @media (min-width: 1024px) {
@@ -1066,6 +1153,21 @@ main {
     width: 11rem;
     height: 11rem;
     padding: 1rem;
+  }
+}
+
+@media (min-width: 1024px) {
+  .process-circle {
+    top: 2rem;
+    right: 2rem;
+    left: auto;
+    transform: none;
+  }
+  .process-circle:hover {
+    transform: scale(1.05);
+  }
+  .process-circle:active {
+    transform: scale(0.98);
   }
 }
 
@@ -1881,11 +1983,6 @@ a.contact-info-value:hover {
 /* ----- Плашка об использовании cookie ----- */
 /* Плашка «Создано командой АТИИ» — всегда внизу */
 .credit-bar {
-  position: fixed;
-  bottom: 0;
-  left: 0;
-  right: 0;
-  z-index: 99;
   background: var(--color-gray-900);
   color: rgba(255, 255, 255, 0.85);
   padding: 0.5rem 1rem;
@@ -1912,7 +2009,7 @@ a.contact-info-value:hover {
 
 .cookie-consent {
   position: fixed;
-  bottom: 2.75rem;
+  bottom: 0;
   left: 0;
   right: 0;
   z-index: 100;
