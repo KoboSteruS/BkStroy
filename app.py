@@ -60,7 +60,14 @@ def load_site_content():
 def get_default_site_content():
     return {
         'hero': {'title': '', 'desc': '', 'btn_primary': '', 'btn_secondary': ''},
-        'about': {'heading': '', 'p1': '', 'p2': '', 'stats': [], 'partners_title': '', 'partners': []},
+        'about': {
+            'heading': '', 'p1': '', 'p2': '', 'advantages': [],
+            'partners_title': '', 'partners': [
+                {'type': 'image', 'src': 'images/Company/company1.png', 'alt': 'Партнёр'},
+                {'type': 'image', 'src': 'images/Company/company2.png', 'alt': 'Партнёр'},
+                {'type': 'text', 'name': 'АО Карелагросервис'}
+            ]
+        },
         'projects': {'heading': '', 'desc': ''},
         'process': {'heading': '', 'circle_title': '', 'circle_sub': '', 'advantages': [], 'steps': [], 'principles_title': '', 'principles_subtitle': '', 'principles': []},
         'contacts': {'heading': '', 'subtitle': '', 'phone': '', 'email': '', 'schedule': ''},

@@ -78,20 +78,23 @@
                             <p>{{ content.about.p2|default('Мы внимательно изучаем задачи бизнеса, предлагаем индивидуальные решения. Ваши сроки для нас нерушимы (любой простой коммерческого помещения ведёт к убыткам, и мы это понимаем).') }}</p>
                         </div>
                     </div>
-                    <div class="about-stats">
-                        {% for stat in content.about.stats|default([{'value':'10+','label':'Лет на рынке'},{'value':'1000+','label':'Довольных клиентов'},{'value':'4000+','label':'Проектов реализовано'},{'value':'95%','label':'Соблюдение сроков'}]) %}
-                        <div class="about-stat">
-                            <span class="about-stat-value" data-value="{{ stat.value }}">{{ stat.value }}</span>
-                            <span class="about-stat-label">{{ stat.label }}</span>
-                        </div>
+                    <ul class="about-advantages" aria-label="Наши преимущества">
+                        {% for item in content.about.advantages|default(['Работаем 7 дней в неделю','Собственный штат специалистов','Гарантия на все виды работ','Работы без предоплаты']) %}
+                        <li><span class="about-check" aria-hidden="true">✓</span> {{ item }}</li>
                         {% endfor %}
-                    </div>
+                    </ul>
                 </div>
                 <div class="partners">
                     <p class="partners-title">{{ content.about.partners_title|default('Нам доверяют ведущие компании') }}</p>
                     <div class="partners-list">
-                        {% for name in content.about.partners|default(['ПромСтрой','МегаГрупп','СтройАльянс','БизнесЦентр','ГородРемонт']) %}
-                        <span class="partner-item">{{ name }}</span>
+                        {% for item in content.about.partners|default([{'type':'image','src':'images/Company/company1.png','alt':'Партнёр'},{'type':'image','src':'images/Company/company2.png','alt':'Партнёр'},{'type':'text','name':'АО Карелагросервис'}]) %}
+                        {% if item is mapping and item.get('type') == 'image' and item.get('src') %}
+                        <span class="partner-item partner-item--img"><img src="{{ url_for('static', filename=item.src) }}" alt="{{ item.get('alt', '') }}" class="partner-logo"></span>
+                        {% elif item is mapping and item.get('name') %}
+                        <span class="partner-item">{{ item.name }}</span>
+                        {% elif item is string %}
+                        <span class="partner-item">{{ item }}</span>
+                        {% endif %}
                         {% endfor %}
                     </div>
                 </div>
@@ -151,11 +154,6 @@
                                 <span class="process-circle-sub">{{ content.process.circle_sub|default('и расчёт стоимости') }}</span>
                             </button>
                         </div>
-                        <ul class="process-advantages">
-                            {% for adv in content.process.advantages|default(['Работаем 7 дней в неделю','Собственный штат специалистов','Гарантия на все виды работ','Работы без предоплаты']) %}
-                            <li><span class="process-check">✓</span> {{ adv }}</li>
-                            {% endfor %}
-                        </ul>
                     </div>
                     <div class="process-steps">
                         {% for step in content.process.steps|default([]) %}

@@ -227,11 +227,12 @@
             document.getElementById('t_about_p1').value = a.p1 || '';
             document.getElementById('t_about_p2').value = a.p2 || '';
             document.getElementById('t_about_partners_title').value = a.partners_title || '';
-            document.getElementById('t_about_partners').value = (a.partners || []).join('\n');
-            var stats = a.stats || [];
-            document.getElementById('t_about_stats').value = stats.map(function(s) {
-                return (s.value || '') + ' — ' + (s.label || '');
-            }).join('\n');
+            document.getElementById('t_about_partners').value = (a.partners || []).map(function(item) {
+                if (item && typeof item === 'object' && item.type === 'image' && item.src) return 'img: ' + item.src;
+                if (item && typeof item === 'object' && item.name) return item.name;
+                return typeof item === 'string' ? item : '';
+            }).filter(Boolean).join('\n');
+            document.getElementById('t_about_advantages').value = (a.advantages || []).join('\n');
 
             document.getElementById('t_projects_heading').value = p.heading || '';
             document.getElementById('t_projects_desc').value = p.desc || '';
@@ -275,15 +276,6 @@
         textsModal.classList.remove('active');
     }
 
-    function parseStats(text) {
-        var lines = text.split('\n').map(function(s) { return s.trim(); }).filter(Boolean);
-        return lines.slice(0, 4).map(function(line) {
-            var dash = line.indexOf('—') >= 0 ? line.indexOf('—') : line.indexOf('-');
-            if (dash < 0) return { value: line, label: '' };
-            return { value: line.slice(0, dash).trim(), label: line.slice(dash + 1).trim() };
-        });
-    }
-
     function parseSteps(text) {
         var lines = text.split('\n').map(function(s) { return s.trim(); }).filter(Boolean);
         return lines.map(function(line) {
@@ -307,7 +299,6 @@
 
     textsForm.addEventListener('submit', function(e) {
         e.preventDefault();
-        var statsText = document.getElementById('t_about_stats').value;
         var stepsText = document.getElementById('t_process_steps').value;
         var principlesText = document.getElementById('t_process_principles').value;
 
@@ -322,9 +313,17 @@
                 heading: document.getElementById('t_about_heading').value.trim(),
                 p1: document.getElementById('t_about_p1').value.trim(),
                 p2: document.getElementById('t_about_p2').value.trim(),
-                stats: parseStats(statsText),
+                advantages: document.getElementById('t_about_advantages').value.split('\n').map(function(s) { return s.trim(); }).filter(Boolean),
                 partners_title: document.getElementById('t_about_partners_title').value.trim(),
-                partners: document.getElementById('t_about_partners').value.split('\n').map(function(s) { return s.trim(); }).filter(Boolean)
+                partners: (function() {
+                    var lines = document.getElementById('t_about_partners').value.split('\n').map(function(s) { return s.trim(); }).filter(Boolean);
+                    return lines.map(function(line) {
+                        if (/^img:\s+/i.test(line)) {
+                            return { type: 'image', src: line.replace(/^img:\s+/i, '').trim(), alt: 'Партнёр' };
+                        }
+                        return { type: 'text', name: line };
+                    });
+                })()
             },
             projects: {
                 heading: document.getElementById('t_projects_heading').value.trim(),
