@@ -425,7 +425,7 @@ button {
   }
 }
 
-/* Круглая кнопка «Бесплатная консультация» в hero — только на мобилке (отмеченная зона между CTA и «О нас») */
+/* Плоская кнопка «Бесплатная консультация» в hero — только на мобилке, в одном стиле с двумя кнопками выше */
 .hero-consult--mobile-only {
   display: none;
 }
@@ -435,50 +435,51 @@ button {
     display: flex;
     justify-content: center;
     align-items: center;
-    margin-top: 1.5rem;
-    padding: 0.5rem 0;
-    min-height: 7rem;
+    margin-top: 1rem;
+    padding: 0.25rem 0;
   }
-  .hero-consult-circle {
-    width: 10rem;
-    height: 10rem;
-    border-radius: 50%;
-    background: var(--color-blue);
-    color: white;
-    border: none;
-    padding: 0.5rem;
-    display: flex;
+  .hero-consult-btn {
+    width: 100%;
+    max-width: 20rem;
+    padding: 1rem 2rem;
+    border-radius: 9999px;
+    background: white;
+    color: var(--color-gray-900);
+    border: 2px solid var(--color-gray-200);
+    display: inline-flex;
     flex-direction: column;
     align-items: center;
     justify-content: center;
-    text-align: center;
-    box-shadow: var(--shadow-2xl);
+    gap: 0.15rem;
+    font-size: 1rem;
+    font-weight: 500;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
     cursor: pointer;
     font: inherit;
-    transition: transform 0.2s, box-shadow 0.2s, background 0.2s;
+    transition: all 0.2s;
   }
-  .hero-consult-circle:hover {
-    background: var(--color-blue-700);
-    transform: scale(1.05);
-    box-shadow: 0 25px 50px -12px rgba(37, 99, 235, 0.4);
+  .hero-consult-btn:hover {
+    background: var(--color-gray-50);
+    border-color: var(--color-gray-300);
+    box-shadow: var(--shadow-lg);
   }
-  .hero-consult-circle:active {
+  .hero-consult-btn:active {
     transform: scale(0.98);
   }
   .hero-consult-title {
-    font-size: 1.2rem;
+    font-size: 1rem;
     font-weight: 600;
-    line-height: 1.15;
+    line-height: 1.25;
     display: block;
-    margin-bottom: 0.1rem;
   }
   .hero-consult-sub {
-    font-size: 1rem;
-    opacity: 0.95;
-    line-height: 1.15;
+    font-size: 0.875rem;
+    font-weight: 500;
+    opacity: 0.9;
+    line-height: 1.25;
     display: block;
   }
-  /* На мобилке круглую кнопку показываем только в hero, в блоке «Как мы работаем» скрываем */
+  /* На мобилке круглую кнопку в блоке «Как мы работаем» скрываем */
   .process-circle-wrap--mobile {
     display: none !important;
   }
