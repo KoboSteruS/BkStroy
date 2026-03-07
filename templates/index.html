@@ -62,6 +62,13 @@
                                     {{ content.hero.btn_secondary|default('Наши проекты') }}
                                 </button>
                             </div>
+                            <!-- Круглая кнопка «Бесплатная консультация» — только на мобилке, в отмеченной зоне между hero и «О нас» -->
+                            <div class="hero-consult hero-consult--mobile-only">
+                                <button type="button" class="hero-consult-circle" onclick="scrollToSection('contacts')" aria-label="Бесплатная консультация и расчёт стоимости — перейти к форме">
+                                    <span class="hero-consult-title">{{ content.process.circle_title|default('Бесплатная консультация') }}</span>
+                                    <span class="hero-consult-sub">{{ content.process.circle_sub|default('и расчёт стоимости') }}</span>
+                                </button>
+                            </div>
                     </div>
                 </div>
             </div>
