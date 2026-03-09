@@ -252,8 +252,8 @@ button {
 
 /* ----- Hero ----- */
 .hero {
-  padding-top: 6rem;
-  padding-bottom: 5rem;
+  padding-top: 8rem;
+  padding-bottom: 3rem;
   width: 100%;
   padding-left: 1.5rem;
   padding-right: 1.5rem;
@@ -267,8 +267,8 @@ button {
 
 @media (min-width: 1024px) {
   .hero {
-    padding-top: 6rem;
-    padding-bottom: 6rem;
+    padding-top: 8rem;
+    padding-bottom: 4rem;
     padding-left: 3rem;
     padding-right: 3rem;
   }
@@ -279,7 +279,7 @@ button {
   width: 100%;
   max-width: 80rem;
   margin: 0 auto;
-  min-height: 32rem;
+  min-height: 28rem;
   overflow: hidden;
   border-radius: var(--radius-2xl);
   box-shadow: var(--shadow-2xl);
@@ -287,13 +287,13 @@ button {
 
 @media (min-width: 640px) {
   .hero-card {
-    min-height: 36rem;
+    min-height: 30rem;
   }
 }
 
 @media (min-width: 1024px) {
   .hero-card {
-    min-height: 50rem;
+    min-height: 26rem;
     border-radius: var(--radius-3xl);
   }
 }
@@ -306,6 +306,9 @@ button {
   background-position: center;
   background-repeat: no-repeat;
   z-index: 0;
+  /* Размытие краёв фона */
+  mask-image: radial-gradient(ellipse 95% 90% at 50% 50%, black 60%, transparent 100%);
+  -webkit-mask-image: radial-gradient(ellipse 95% 90% at 50% 50%, black 60%, transparent 100%);
 }
 
 .hero-overlay {
@@ -323,7 +326,7 @@ button {
   gap: 1.5rem;
   align-items: center;
   padding: 1.5rem 0 2rem;
-  min-height: 30rem;
+  min-height: 26rem;
 }
 
 @media (max-width: 767px) {
@@ -337,15 +340,15 @@ button {
   .hero-grid {
     gap: 2rem;
     padding: 2rem 0;
-    min-height: 36rem;
+    min-height: 30rem;
   }
 }
 
 @media (min-width: 1024px) {
   .hero-grid {
     grid-template-columns: 1fr 1fr;
-    padding: 4rem 0;
-    min-height: 48rem;
+    padding: 3rem 0;
+    min-height: 26rem;
   }
 }
 
