@@ -69,7 +69,11 @@ def get_default_site_content():
             ]
         },
         'projects': {'heading': '', 'desc': ''},
-        'process': {'heading': '', 'circle_title': '', 'circle_sub': '', 'advantages': [], 'steps': [], 'principles_title': '', 'principles_subtitle': '', 'principles': []},
+        'process': {
+            'heading': '', 'circle_title': '', 'circle_sub': '', 'advantages': [], 'steps': [], 
+            'principles_title': '', 'principles_subtitle': '', 'principles': [],
+            'slider_images': ['images/process.jpg']
+        },
         'contacts': {'heading': '', 'subtitle': '', 'phone': '', 'email': '', 'schedule': ''},
         'footer': {'logo_title': '', 'logo_subtitle': '', 'about': '', 'nav_title': '', 'services_title': '', 'services': [], 'copy': ''}
     }
@@ -196,18 +200,37 @@ def api_upload():
     if 'files' not in request.files and 'file' not in request.files:
         return jsonify({'error': 'No file part'}), 400
     files = request.files.getlist('files') if 'files' in request.files else [request.files['file']]
+    
+    # Определяем тип загрузки (каталог или слайдер)
+    upload_type = request.form.get('type', 'catalog')
+    
+    if upload_type == 'slider':
+        upload_folder = os.path.join(os.path.dirname(__file__), 'static', 'images')
+    else:
+        upload_folder = UPLOAD_FOLDER
+    
     urls = []
-    os.makedirs(UPLOAD_FOLDER, exist_ok=True)
+    os.makedirs(upload_folder, exist_ok=True)
     for f in files:
         if not f or not f.filename:
             continue
         if not allowed_file(f.filename):
             continue
         ext = f.filename.rsplit('.', 1)[1].lower()
-        name = str(uuid.uuid4()) + '.' + ext
-        path = os.path.join(UPLOAD_FOLDER, name)
-        f.save(path)
-        urls.append(url_for('static', filename='uploads/catalog/' + name))
+        
+        if upload_type == 'slider':
+            # Для слайдера используем понятные имена
+            name = 'process_' + str(uuid.uuid4())[:8] + '.' + ext
+            path = os.path.join(upload_folder, name)
+            f.save(path)
+            urls.append(url_for('static', filename='images/' + name))
+        else:
+            # Для каталога используем полные UUID
+            name = str(uuid.uuid4()) + '.' + ext
+            path = os.path.join(upload_folder, name)
+            f.save(path)
+            urls.append(url_for('static', filename='uploads/catalog/' + name))
+    
     if not urls:
         return jsonify({'error': 'No valid files (allowed: png, jpg, jpeg, gif, webp)'}), 400
     return jsonify({'urls': urls})

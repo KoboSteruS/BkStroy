@@ -25,6 +25,14 @@
         </section>
 
         <section class="admin-section">
+            <h2 class="admin-section-title">Фотографии слайдера "Как мы работаем"</h2>
+            <p class="admin-section-desc">Управляйте изображениями для вертикального слайдера. Каждое изображение соответствует одному этапу работы.</p>
+            <div class="admin-toolbar">
+                <button type="button" class="admin-btn admin-btn-primary" id="btnManageSlider">Управление фотографиями</button>
+            </div>
+        </section>
+
+        <section class="admin-section">
             <h2 class="admin-section-title">Каталог объектов</h2>
             <p class="admin-section-desc">Добавляйте, редактируйте и удаляйте объекты. Изменения сразу отображаются на главной странице.</p>
 
@@ -143,6 +151,37 @@
                     <button type="submit" class="admin-btn admin-btn-primary">Сохранить все тексты</button>
                 </div>
             </form>
+        </div>
+    </div>
+
+    <!-- Модальное окно: фотографии слайдера -->
+    <div class="admin-modal-overlay" id="sliderModal">
+        <div class="admin-modal">
+            <div class="admin-modal-head">
+                <h3 class="admin-modal-title">Управление фотографиями слайдера</h3>
+                <button type="button" class="admin-modal-close" id="sliderModalClose">&times;</button>
+            </div>
+            <div class="admin-form">
+                <p class="admin-form-hint">Загрузите изображения для слайдера. Количество изображений должно соответствовать количеству этапов работы (сейчас: <span id="stepsCount">5</span> этапов).</p>
+                
+                <div class="admin-form-group">
+                    <label>Загрузить фотографии</label>
+                    <div class="admin-upload-row">
+                        <input type="file" id="sliderImagesUpload" accept=".jpg,.jpeg,.png,.webp" multiple class="admin-file-input">
+                        <button type="button" class="admin-btn admin-btn-outline" id="btnUploadSliderImages">Загрузить фото</button>
+                    </div>
+                </div>
+
+                <div class="admin-form-group">
+                    <label>Текущие фотографии слайдера</label>
+                    <div id="sliderImagesList" class="admin-slider-images-list"></div>
+                </div>
+
+                <div class="admin-form-actions">
+                    <button type="button" class="admin-btn admin-btn-outline" id="sliderModalCancel">Закрыть</button>
+                    <button type="button" class="admin-btn admin-btn-primary" id="btnSaveSlider">Сохранить изменения</button>
+                </div>
+            </div>
         </div>
     </div>
 

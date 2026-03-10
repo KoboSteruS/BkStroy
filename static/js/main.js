@@ -227,10 +227,113 @@ function initProjectsScroll() {
     updateNavState();
 }
 
+// Слайдер процесса работы с вертикальным переключением и fade-эффектом
+function initProcessSlider() {
+    var slides = document.querySelectorAll('.process-slide');
+    var steps = document.querySelectorAll('.process-step');
+    var prevBtn = document.getElementById('processPrev');
+    var nextBtn = document.getElementById('processNext');
+    var processLayout = document.querySelector('.process-layout');
+    
+    if (!steps.length) return;
+    
+    var currentIndex = 0;
+    
+    function goToSlide(index) {
+        if (index < 0 || index >= steps.length) return;
+        
+        // Убираем активный класс со всех слайдов и шагов
+        if (slides.length) {
+            slides.forEach(function(slide) {
+                slide.classList.remove('process-slide--active');
+            });
+            // Добавляем активный класс к текущему слайду
+            if (slides[index]) {
+                slides[index].classList.add('process-slide--active');
+            }
+        }
+        
+        steps.forEach(function(step) {
+            step.classList.remove('process-step--active');
+        });
+        
+        // Добавляем активный класс к текущему шагу
+        steps[index].classList.add('process-step--active');
+        
+        // Меняем фон на мобильных устройствах
+        if (processLayout && window.innerWidth < 1024) {
+            var imagePath = '../static/images/process.jpg';
+            processLayout.style.setProperty('--bg-image', 'url(' + imagePath + ')');
+        }
+        
+        currentIndex = index;
+        updateNavButtons();
+    }
+    
+    function updateNavButtons() {
+        if (prevBtn) {
+            prevBtn.disabled = currentIndex === 0;
+        }
+        if (nextBtn) {
+            nextBtn.disabled = currentIndex === steps.length - 1;
+        }
+    }
+    
+    // Обработчики кнопок навигации
+    if (prevBtn) {
+        prevBtn.addEventListener('click', function() {
+            goToSlide(currentIndex - 1);
+        });
+    }
+    
+    if (nextBtn) {
+        nextBtn.addEventListener('click', function() {
+            goToSlide(currentIndex + 1);
+        });
+    }
+    
+    // Клик по шагу для переключения слайда
+    steps.forEach(function(step, index) {
+        step.addEventListener('click', function() {
+            goToSlide(index);
+        });
+    });
+    
+    // Поддержка свайпов на мобильных
+    var stepsContainer = document.querySelector('.process-steps');
+    if (stepsContainer && 'ontouchstart' in window && window.innerWidth < 1024) {
+        var touchStartY = 0;
+        
+        stepsContainer.addEventListener('touchstart', function(e) {
+            touchStartY = e.changedTouches[0].screenY;
+        });
+        
+        stepsContainer.addEventListener('touchend', function(e) {
+            var touchEndY = e.changedTouches[0].screenY;
+            var dy = touchEndY - touchStartY;
+            
+            // Вертикальный свайп
+            if (Math.abs(dy) > 50) {
+                if (dy > 0) {
+                    // Свайп вниз - предыдущий слайд
+                    goToSlide(currentIndex - 1);
+                } else {
+                    // Свайп вверх - следующий слайд
+                    goToSlide(currentIndex + 1);
+                }
+            }
+        });
+    }
+    
+    // Инициализация
+    updateNavButtons();
+}
+
 // Contact form submission
 document.addEventListener('DOMContentLoaded', function() {
     initCounters();
     initProjectsScroll();
+    initProcessSlider();
 
     var projectCards = document.querySelectorAll('.project-card');
     projectCards.forEach(function(card) {

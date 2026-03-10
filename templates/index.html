@@ -162,17 +162,33 @@
 
                 <div class="process-layout">
                     <div class="process-media">
-                            <div class="process-image-wrap">
-                                <img src="{{ url_for('static', filename='images/process.jpg') }}" alt="Процесс работы" class="process-image">
+                        <div class="process-slider-wrap">
+                            <div class="process-slider" id="processSlider">
+                                {% set slider_images = content.process.get('slider_images', ['images/process.jpg']) %}
+                                {% for step in content.process.steps|default([]) %}
+                                <div class="process-slide {% if loop.index == 1 %}process-slide--active{% endif %}">
+                                    {% set img_index = loop.index0 if loop.index0 < slider_images|length else 0 %}
+                                    <img src="{{ url_for('static', filename=slider_images[img_index]) }}" alt="{{ step.title }}" class="process-image">
+                                </div>
+                                {% endfor %}
+                            </div>
                             <button type="button" class="process-circle process-circle--desktop" onclick="scrollToSection('contacts')" aria-label="Бесплатная консультация и расчёт стоимости — перейти к форме">
                                 <span class="process-circle-title">{{ content.process.circle_title|default('Бесплатная консультация') }}</span>
                                 <span class="process-circle-sub">{{ content.process.circle_sub|default('и расчёт стоимости') }}</span>
                             </button>
+                            <div class="process-slider-controls">
+                                <button type="button" class="process-slider-btn process-slider-btn--prev" id="processPrev" aria-label="Предыдущий этап">
+                                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="18 15 12 9 6 15"/></svg>
+                                </button>
+                                <button type="button" class="process-slider-btn process-slider-btn--next" id="processNext" aria-label="Следующий этап">
+                                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg>
+                                </button>
+                            </div>
                         </div>
                     </div>
-                    <div class="process-steps">
+                    <div class="process-steps" id="processSteps">
                         {% for step in content.process.steps|default([]) %}
-                        <div class="process-step">
+                        <div class="process-step {% if loop.index == 1 %}process-step--active{% endif %}" data-step="{{ loop.index }}">
                             <div class="process-step-num">{{ step.num }}</div>
                             <div class="process-step-body">
                                 <h3 class="process-step-title">{{ step.title }}</h3>
@@ -191,11 +207,11 @@
                         <div class="principle-card">
                             <div class="principle-icon principle-icon-{{ 'blue' if loop.index == 2 else 'yellow' }}">
                                 {% if loop.index == 1 %}
-                                <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg>
+                                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg>
                                 {% elif loop.index == 2 %}
-                                <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/><path d="M9 12l2 2 4-4"/></svg>
+                                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/><path d="M9 12l2 2 4-4"/></svg>
                                 {% else %}
-                                <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 18h6"/><path d="M10 22h4"/><path d="M15.09 14c.18-.98.65-1.74 1.41-2.5A4.65 4.65 0 0 0 18 8 6 6 0 0 0 6 8c0 1 .23 2.23 1.5 3.5A4.61 4.61 0 0 1 8.91 14"/></svg>
+                                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 18h6"/><path d="M10 22h4"/><path d="M15.09 14c.18-.98.65-1.74 1.41-2.5A4.65 4.65 0 0 0 18 8 6 6 0 0 0 6 8c0 1 .23 2.23 1.5 3.5A4.61 4.61 0 0 1 8.91 14"/></svg>
                                 {% endif %}
                             </div>
                             <h4 class="principle-heading">{{ p.heading }}</h4>
@@ -308,7 +324,7 @@
                 <div class="footer-col">
                     <h3 class="footer-col-title">{{ content.footer.services_title|default('Наши услуги') }}</h3>
                     <ul class="footer-services">
-                        {% for s in content.footer.services|default(['Ремонт коммерческих помещений','Устройство фасадов','Проектирование','Экспертная оценка']) %}
+                        {% for s in content.footer.services|default(['Ремонт коммерческих помещений','Устройство фасадов','Экспертная оценка']) %}
                         <li>{{ s }}</li>
                         {% endfor %}
                     </ul>

@@ -302,66 +302,70 @@
         var stepsText = document.getElementById('t_process_steps').value;
         var principlesText = document.getElementById('t_process_principles').value;
 
-        var payload = {
-            hero: {
-                title: document.getElementById('t_hero_title').value.trim(),
-                desc: document.getElementById('t_hero_desc').value.trim(),
-                btn_primary: document.getElementById('t_hero_btn_primary').value.trim(),
-                btn_secondary: document.getElementById('t_hero_btn_secondary').value.trim()
-            },
-            about: {
-                heading: document.getElementById('t_about_heading').value.trim(),
-                p1: document.getElementById('t_about_p1').value.trim(),
-                p2: document.getElementById('t_about_p2').value.trim(),
-                advantages: document.getElementById('t_about_advantages').value.split('\n').map(function(s) { return s.trim(); }).filter(Boolean),
-                partners_title: document.getElementById('t_about_partners_title').value.trim(),
-                partners: (function() {
-                    var lines = document.getElementById('t_about_partners').value.split('\n').map(function(s) { return s.trim(); }).filter(Boolean);
-                    return lines.map(function(line) {
-                        if (/^img:\s+/i.test(line)) {
-                            return { type: 'image', src: line.replace(/^img:\s+/i, '').trim(), alt: 'Партнёр' };
-                        }
-                        return { type: 'text', name: line };
-                    });
-                })()
-            },
-            projects: {
-                heading: document.getElementById('t_projects_heading').value.trim(),
-                desc: document.getElementById('t_projects_desc').value.trim()
-            },
-            process: {
-                heading: document.getElementById('t_process_heading').value.trim(),
-                circle_title: document.getElementById('t_process_circle_title').value.trim(),
-                circle_sub: document.getElementById('t_process_circle_sub').value.trim(),
-                advantages: document.getElementById('t_process_advantages').value.split('\n').map(function(s) { return s.trim(); }).filter(Boolean),
-                steps: parseSteps(stepsText),
-                principles_title: document.getElementById('t_process_principles_title').value.trim(),
-                principles_subtitle: document.getElementById('t_process_principles_subtitle').value.trim(),
-                principles: parsePrinciples(principlesText)
-            },
-            contacts: {
-                heading: document.getElementById('t_contacts_heading').value.trim(),
-                subtitle: document.getElementById('t_contacts_subtitle').value.trim(),
-                phone: document.getElementById('t_contacts_phone').value.trim(),
-                email: document.getElementById('t_contacts_email').value.trim(),
-                schedule: document.getElementById('t_contacts_schedule').value.trim()
-            },
-            footer: {
-                logo_title: document.getElementById('t_footer_logo_title').value.trim(),
-                logo_subtitle: document.getElementById('t_footer_logo_subtitle').value.trim(),
-                about: document.getElementById('t_footer_about').value.trim(),
-                nav_title: document.getElementById('t_footer_nav_title').value.trim(),
-                services_title: document.getElementById('t_footer_services_title').value.trim(),
-                services: document.getElementById('t_footer_services').value.split('\n').map(function(s) { return s.trim(); }).filter(Boolean),
-                copy: document.getElementById('t_footer_copy').value.trim()
-            }
-        };
+        // Получаем текущий контент, чтобы сохранить slider_images
+        api('/site-content').then(function(currentContent) {
+            var payload = {
+                hero: {
+                    title: document.getElementById('t_hero_title').value.trim(),
+                    desc: document.getElementById('t_hero_desc').value.trim(),
+                    btn_primary: document.getElementById('t_hero_btn_primary').value.trim(),
+                    btn_secondary: document.getElementById('t_hero_btn_secondary').value.trim()
+                },
+                about: {
+                    heading: document.getElementById('t_about_heading').value.trim(),
+                    p1: document.getElementById('t_about_p1').value.trim(),
+                    p2: document.getElementById('t_about_p2').value.trim(),
+                    advantages: document.getElementById('t_about_advantages').value.split('\n').map(function(s) { return s.trim(); }).filter(Boolean),
+                    partners_title: document.getElementById('t_about_partners_title').value.trim(),
+                    partners: (function() {
+                        var lines = document.getElementById('t_about_partners').value.split('\n').map(function(s) { return s.trim(); }).filter(Boolean);
+                        return lines.map(function(line) {
+                            if (/^img:\s+/i.test(line)) {
+                                return { type: 'image', src: line.replace(/^img:\s+/i, '').trim(), alt: 'Партнёр' };
+                            }
+                            return { type: 'text', name: line };
+                        });
+                    })()
+                },
+                projects: {
+                    heading: document.getElementById('t_projects_heading').value.trim(),
+                    desc: document.getElementById('t_projects_desc').value.trim()
+                },
+                process: {
+                    heading: document.getElementById('t_process_heading').value.trim(),
+                    circle_title: document.getElementById('t_process_circle_title').value.trim(),
+                    circle_sub: document.getElementById('t_process_circle_sub').value.trim(),
+                    advantages: document.getElementById('t_process_advantages').value.split('\n').map(function(s) { return s.trim(); }).filter(Boolean),
+                    steps: parseSteps(stepsText),
+                    principles_title: document.getElementById('t_process_principles_title').value.trim(),
+                    principles_subtitle: document.getElementById('t_process_principles_subtitle').value.trim(),
+                    principles: parsePrinciples(principlesText),
+                    slider_images: (currentContent.process && currentContent.process.slider_images) || ['images/process.jpg']
+                },
+                contacts: {
+                    heading: document.getElementById('t_contacts_heading').value.trim(),
+                    subtitle: document.getElementById('t_contacts_subtitle').value.trim(),
+                    phone: document.getElementById('t_contacts_phone').value.trim(),
+                    email: document.getElementById('t_contacts_email').value.trim(),
+                    schedule: document.getElementById('t_contacts_schedule').value.trim()
+                },
+                footer: {
+                    logo_title: document.getElementById('t_footer_logo_title').value.trim(),
+                    logo_subtitle: document.getElementById('t_footer_logo_subtitle').value.trim(),
+                    about: document.getElementById('t_footer_about').value.trim(),
+                    nav_title: document.getElementById('t_footer_nav_title').value.trim(),
+                    services_title: document.getElementById('t_footer_services_title').value.trim(),
+                    services: document.getElementById('t_footer_services').value.split('\n').map(function(s) { return s.trim(); }).filter(Boolean),
+                    copy: document.getElementById('t_footer_copy').value.trim()
+                }
+            };
 
-        api('/site-content', { method: 'PUT', body: payload }).then(function() {
-            closeTextsModal();
-            alert('Тексты сохранены. Обновите главную страницу, чтобы увидеть изменения.');
-        }).catch(function(err) {
-            alert('Ошибка: ' + err.message);
+            api('/site-content', { method: 'PUT', body: payload }).then(function() {
+                closeTextsModal();
+                alert('Тексты сохранены. Обновите главную страницу, чтобы увидеть изменения.');
+            }).catch(function(err) {
+                alert('Ошибка: ' + err.message);
+            });
         });
     });
 
@@ -375,7 +379,141 @@
     document.addEventListener('keydown', function(e) {
         if (e.key === 'Escape') {
             if (textsModal && textsModal.classList.contains('active')) closeTextsModal();
+            else if (sliderModal && sliderModal.classList.contains('active')) closeSliderModal();
             else closeModal();
         }
+    });
+
+    // --- Управление фотографиями слайдера ---
+    var sliderModal = document.getElementById('sliderModal');
+    var btnManageSlider = document.getElementById('btnManageSlider');
+    var sliderModalClose = document.getElementById('sliderModalClose');
+    var sliderModalCancel = document.getElementById('sliderModalCancel');
+    var sliderImagesList = document.getElementById('sliderImagesList');
+    var sliderImagesUpload = document.getElementById('sliderImagesUpload');
+    var btnUploadSliderImages = document.getElementById('btnUploadSliderImages');
+    var btnSaveSlider = document.getElementById('btnSaveSlider');
+    var stepsCount = document.getElementById('stepsCount');
+
+    var currentSliderImages = [];
+    var currentSiteContent = null;
+
+    function openSliderModal() {
+        api('/site-content').then(function(content) {
+            currentSiteContent = content;
+            var process = content.process || {};
+            currentSliderImages = process.slider_images || ['images/process.jpg'];
+            var steps = process.steps || [];
+            
+            if (stepsCount) stepsCount.textContent = steps.length;
+            
+            renderSliderImages();
+            sliderModal.classList.add('active');
+        }).catch(function(err) {
+            alert('Ошибка загрузки: ' + err.message);
+        });
+    }
+
+    function closeSliderModal() {
+        sliderModal.classList.remove('active');
+    }
+
+    function renderSliderImages() {
+        if (!currentSliderImages || currentSliderImages.length === 0) {
+            sliderImagesList.innerHTML = '<div class="admin-empty">Изображений пока нет. Загрузите фото.</div>';
+            return;
+        }
+
+        sliderImagesList.innerHTML = currentSliderImages.map(function(img, index) {
+            return (
+                '<div class="admin-slider-image-item" data-index="' + index + '">' +
+                '<img src="/static/' + img + '" alt="Слайд ' + (index + 1) + '">' +
+                '<div class="admin-slider-image-controls">' +
+                '<span class="admin-slider-image-num">Этап ' + (index + 1) + '</span>' +
+                '<button type="button" class="admin-btn admin-btn-small admin-btn-danger btn-remove-slide" data-index="' + index + '">×</button>' +
+                '</div>' +
+                '</div>'
+            );
+        }).join('');
+
+        sliderImagesList.querySelectorAll('.btn-remove-slide').forEach(function(btn) {
+            btn.addEventListener('click', function() {
+                var idx = parseInt(btn.getAttribute('data-index'), 10);
+                if (confirm('Удалить это изображение из слайдера?')) {
+                    currentSliderImages.splice(idx, 1);
+                    renderSliderImages();
+                }
+            });
+        });
+    }
+
+    function onSliderImagesSelected() {
+        var files = sliderImagesUpload && sliderImagesUpload.files;
+        if (!files || files.length === 0) return;
+        
+        var formData = new FormData();
+        for (var i = 0; i < files.length; i++) formData.append('files', files[i]);
+        formData.append('type', 'slider');
+        
+        if (btnUploadSliderImages) {
+            btnUploadSliderImages.disabled = true;
+            btnUploadSliderImages.textContent = 'Загрузка…';
+        }
+        
+        fetch('/api/admin/upload', {
+            method: 'POST',
+            body: formData,
+            credentials: 'same-origin'
+        }).then(function(r) {
+            if (!r.ok) return r.json().then(function(d) { throw new Error(d.error || 'Ошибка загрузки'); });
+            return r.json();
+        }).then(function(data) {
+            var urls = (data.urls || []).filter(Boolean);
+            if (urls.length) {
+                // Добавляем новые URL к текущим изображениям
+                urls.forEach(function(url) {
+                    // Убираем /static/ из начала URL
+                    var path = url.replace(/^\/static\//, '');
+                    currentSliderImages.push(path);
+                });
+                renderSliderImages();
+            }
+        }).catch(function(err) {
+            alert('Ошибка: ' + err.message);
+        }).then(function() {
+            if (btnUploadSliderImages) {
+                btnUploadSliderImages.disabled = false;
+                btnUploadSliderImages.textContent = 'Загрузить фото';
+            }
+            sliderImagesUpload.value = '';
+        });
+    }
+
+    function saveSliderImages() {
+        if (!currentSiteContent) return;
+        
+        // Обновляем slider_images в объекте process
+        currentSiteContent.process = currentSiteContent.process || {};
+        currentSiteContent.process.slider_images = currentSliderImages;
+        
+        api('/site-content', { method: 'PUT', body: currentSiteContent }).then(function() {
+            closeSliderModal();
+            alert('Изображения слайдера сохранены. Обновите главную страницу, чтобы увидеть изменения.');
+        }).catch(function(err) {
+            alert('Ошибка сохранения: ' + err.message);
+        });
+    }
+
+    if (btnManageSlider) btnManageSlider.addEventListener('click', openSliderModal);
+    if (sliderModalClose) sliderModalClose.addEventListener('click', closeSliderModal);
+    if (sliderModalCancel) sliderModalCancel.addEventListener('click', closeSliderModal);
+    if (btnUploadSliderImages) btnUploadSliderImages.addEventListener('click', function() {
+        if (sliderImagesUpload) sliderImagesUpload.click();
+    });
+    if (sliderImagesUpload) sliderImagesUpload.addEventListener('change', onSliderImagesSelected);
+    if (btnSaveSlider) btnSaveSlider.addEventListener('click', saveSliderImages);
+    
+    sliderModal.addEventListener('click', function(e) {
+        if (e.target === sliderModal) closeSliderModal();
     });
 })();
