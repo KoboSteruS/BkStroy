@@ -197,43 +197,47 @@ def api_catalog_delete(item_id):
 @app.route('/api/admin/upload', methods=['POST'])
 @admin_required
 def api_upload():
-    if 'files' not in request.files and 'file' not in request.files:
-        return jsonify({'error': 'No file part'}), 400
-    files = request.files.getlist('files') if 'files' in request.files else [request.files['file']]
-    
-    # Определяем тип загрузки (каталог или слайдер)
-    upload_type = request.form.get('type', 'catalog')
-    
-    if upload_type == 'slider':
-        upload_folder = os.path.join(os.path.dirname(__file__), 'static', 'images')
-    else:
-        upload_folder = UPLOAD_FOLDER
-    
-    urls = []
-    os.makedirs(upload_folder, exist_ok=True)
-    for f in files:
-        if not f or not f.filename:
-            continue
-        if not allowed_file(f.filename):
-            continue
-        ext = f.filename.rsplit('.', 1)[1].lower()
+    try:
+        if 'files' not in request.files and 'file' not in request.files:
+            return jsonify({'error': 'No file part'}), 400
+        files = request.files.getlist('files') if 'files' in request.files else [request.files['file']]
+        
+        # Определяем тип загрузки (каталог или слайдер)
+        upload_type = request.form.get('type', 'catalog')
         
         if upload_type == 'slider':
-            # Для слайдера используем понятные имена
-            name = 'process_' + str(uuid.uuid4())[:8] + '.' + ext
-            path = os.path.join(upload_folder, name)
-            f.save(path)
-            urls.append(url_for('static', filename='images/' + name))
+            upload_folder = os.path.join(os.path.dirname(__file__), 'static', 'images')
         else:
-            # Для каталога используем полные UUID
-            name = str(uuid.uuid4()) + '.' + ext
-            path = os.path.join(upload_folder, name)
-            f.save(path)
-            urls.append(url_for('static', filename='uploads/catalog/' + name))
-    
-    if not urls:
-        return jsonify({'error': 'No valid files (allowed: png, jpg, jpeg, gif, webp)'}), 400
-    return jsonify({'urls': urls})
+            upload_folder = UPLOAD_FOLDER
+        
+        urls = []
+        os.makedirs(upload_folder, exist_ok=True)
+        
+        for f in files:
+            if not f or not f.filename:
+                continue
+            if not allowed_file(f.filename):
+                continue
+            ext = f.filename.rsplit('.', 1)[1].lower()
+            
+            if upload_type == 'slider':
+                # Для слайдера используем понятные имена
+                name = 'process_' + str(uuid.uuid4())[:8] + '.' + ext
+                path = os.path.join(upload_folder, name)
+                f.save(path)
+                urls.append(url_for('static', filename='images/' + name, _external=True))
+            else:
+                # Для каталога используем полные UUID
+                name = str(uuid.uuid4()) + '.' + ext
+                path = os.path.join(upload_folder, name)
+                f.save(path)
+                urls.append(url_for('static', filename='uploads/catalog/' + name, _external=True))
+        
+        if not urls:
+            return jsonify({'error': 'No valid files (allowed: png, jpg, jpeg, gif, webp)'}), 400
+        return jsonify({'urls': urls})
+    except Exception as e:
+        return jsonify({'error': f'Server error: {str(e)}'}), 500
 
 # --- API текстов сайта (только для админа) ---
 @app.route('/api/admin/site-content', methods=['GET'])

@@ -151,7 +151,7 @@
                 objectImages.value = cur ? cur + '\n' + add : add;
             }
         }).catch(function(err) {
-            alert('Ошибка: ' + err.message);
+            alert('Ошибка загрузки: ' + err.message);
         }).then(function() {
             if (btnUploadImages) {
                 btnUploadImages.disabled = false;
@@ -471,15 +471,19 @@
             var urls = (data.urls || []).filter(Boolean);
             if (urls.length) {
                 // Добавляем новые URL к текущим изображениям
+                // Преобразуем полные URL в относительные пути для слайдера
                 urls.forEach(function(url) {
-                    // Убираем /static/ из начала URL
-                    var path = url.replace(/^\/static\//, '');
+                    // Извлекаем путь из полного URL: http://domain/static/images/file.jpg -> images/file.jpg
+                    var path = url;
+                    if (url.indexOf('/static/') !== -1) {
+                        path = url.substring(url.indexOf('/static/') + 8); // +8 для пропуска "/static/"
+                    }
                     currentSliderImages.push(path);
                 });
                 renderSliderImages();
             }
         }).catch(function(err) {
-            alert('Ошибка: ' + err.message);
+            alert('Ошибка загрузки: ' + err.message);
         }).then(function() {
             if (btnUploadSliderImages) {
                 btnUploadSliderImages.disabled = false;
