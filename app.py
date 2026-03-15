@@ -24,7 +24,8 @@ def load_config():
             return json.load(f)
     return {
         "admin_token": "change_me_in_config",
-        "secret_key": "change_me_secret_key"
+        "secret_key": "change_me_secret_key",
+        "site_url": ""
     }
 
 CONFIG = load_config()
@@ -93,9 +94,27 @@ def admin_required(f):
     return wrapped
 
 # --- Маршруты сайта ---
+def get_seo_base_url():
+    """
+    Базовый URL сайта для og:image, canonical и т.д.
+    Важно: за прокси request.url_root часто даёт localhost — тогда превью в Telegram не работает.
+    Задайте в config/admin_config.json ключ "site_url" (например https://xn---10-9cd5be3apik.xn--p1ai).
+    """
+    cfg = load_config()
+    if cfg.get('site_url'):
+        return cfg['site_url'].rstrip('/')
+    if not request:
+        return 'https://bk-stroy.ru'
+    proto = request.headers.get('X-Forwarded-Proto') or request.scheme
+    host = request.headers.get('X-Forwarded-Host') or request.host
+    if host:
+        return f"{proto}://{host}".rstrip('/')
+    return request.url_root.rstrip('/')
+
+
 def get_seo_context():
     """Абсолютные URL и тексты для превью при расшаривании и для поисковиков."""
-    base = request.url_root.rstrip('/') if request else 'https://bk-stroy.ru'
+    base = get_seo_base_url()
     content = load_site_content()
     hero = content.get('hero') or {}
     contacts = content.get('contacts') or {}
