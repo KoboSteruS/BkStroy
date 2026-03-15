@@ -93,11 +93,36 @@ def admin_required(f):
     return wrapped
 
 # --- Маршруты сайта ---
+def get_seo_context():
+    """Абсолютные URL и тексты для превью при расшаривании и для поисковиков."""
+    base = request.url_root.rstrip('/') if request else 'https://bk-stroy.ru'
+    content = load_site_content()
+    hero = content.get('hero') or {}
+    contacts = content.get('contacts') or {}
+    title = (hero.get('title') or 'БК-СТРОЙ | Ремонт коммерческих помещений и устройство фасадов в Москве').strip()
+    desc = (hero.get('desc') or 'Профессиональный ремонт коммерческих помещений, устройство фасадов зданий в Москве и области. Работаем с 2016 года. Гарантия качества. Без предоплаты.').strip()
+    if len(desc) > 160:
+        desc = desc[:157] + '...'
+    og_image_name = 'og-image.jpg' if os.path.exists(os.path.join(os.path.dirname(__file__), 'static', 'images', 'og-image.jpg')) else 'process.jpg'
+    og_image_url = base + url_for('static', filename='images/' + og_image_name, _external=False)
+    phone = (contacts.get('phone') or '+7 (495) 123-45-67')
+    phone_clean = phone.replace(' ', '').replace('(', '').replace(')', '').replace('-', '')
+    return {
+        'seo_base_url': base,
+        'seo_canonical': base + (request.path if request and request.path else '/'),
+        'seo_title': title,
+        'seo_description': desc,
+        'seo_og_image': og_image_url,
+        'seo_phone': phone_clean,
+    }
+
+
 @app.route('/')
 def index():
     catalog = load_catalog()
     content = load_site_content()
-    return render_template('index.html', catalog=catalog, content=content)
+    seo = get_seo_context()
+    return render_template('index.html', catalog=catalog, content=content, seo=seo)
 
 @app.route('/contact', methods=['POST'])
 def contact():

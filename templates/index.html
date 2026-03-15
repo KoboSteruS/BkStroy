@@ -5,32 +5,35 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     
-    <!-- Primary Meta Tags -->
-    <title>БК-СТРОЙ | Ремонт коммерческих помещений и устройство фасадов в Москве</title>
-    <meta name="title" content="БК-СТРОЙ | Ремонт коммерческих помещений и устройство фасадов в Москве">
-    <meta name="description" content="Профессиональный ремонт коммерческих помещений, устройство фасадов зданий в Москве и области. Работаем с 2016 года. Гарантия качества. Без предоплаты. ☎️ +7 (495) 123-45-67">
-    <meta name="keywords" content="ремонт коммерческих помещений, устройство фасадов, ремонт офисов москва, коммерческий ремонт, строительство для бизнеса, БК-СТРОЙ">
+    <!-- Primary Meta Tags (для поисковиков и превью при расшаривании) -->
+    <title>{{ seo.seo_title|default('БК-СТРОЙ | Ремонт коммерческих помещений и устройство фасадов в Москве') }}</title>
+    <meta name="title" content="{{ seo.seo_title|default('БК-СТРОЙ | Ремонт коммерческих помещений и устройство фасадов в Москве') }}">
+    <meta name="description" content="{{ seo.seo_description|default('Профессиональный ремонт коммерческих помещений, устройство фасадов зданий в Москве и области. Работаем с 2016 года. Гарантия качества. Без предоплаты.') }}">
+    <meta name="keywords" content="ремонт коммерческих помещений, устройство фасадов, ремонт офисов москва, коммерческий ремонт, строительство для бизнеса, БК-СТРОЙ, ремонт под ключ москва">
     <meta name="author" content="БК-СТРОЙ">
     <meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1">
-    <link rel="canonical" href="{{ request.url_root if request else 'https://bk-stroy.ru/' }}">
+    <link rel="canonical" href="{{ seo.seo_canonical|default(seo.seo_base_url|default('https://bk-stroy.ru') + '/') }}">
     
-    <!-- Open Graph / Facebook -->
+    <!-- Open Graph (Telegram, VK, WhatsApp, Facebook — превью при отправке ссылки) -->
     <meta property="og:type" content="website">
-    <meta property="og:url" content="{{ request.url if request else 'https://bk-stroy.ru/' }}">
+    <meta property="og:url" content="{{ seo.seo_canonical|default(seo.seo_base_url|default('https://bk-stroy.ru') + '/') }}">
     <meta property="og:site_name" content="БК-СТРОЙ">
-    <meta property="og:title" content="БК-СТРОЙ | Ремонт коммерческих помещений и устройство фасадов">
-    <meta property="og:description" content="Профессиональный ремонт коммерческих помещений, устройство фасадов зданий в Москве и области. Работаем с 2016 года. Гарантия качества.">
-    <meta property="og:image" content="{{ url_for('static', filename='images/og-image.jpg', _external=True) if url_for else 'https://bk-stroy.ru/static/images/og-image.jpg' }}">
+    <meta property="og:title" content="{{ seo.seo_title|default('БК-СТРОЙ | Ремонт коммерческих помещений и устройство фасадов') }}">
+    <meta property="og:description" content="{{ seo.seo_description|default('Профессиональный ремонт коммерческих помещений, устройство фасадов зданий в Москве и области. Работаем с 2016 года. Гарантия качества.') }}">
+    <meta property="og:image" content="{{ seo.seo_og_image }}">
+    <meta property="og:image:secure_url" content="{{ seo.seo_og_image }}">
     <meta property="og:image:width" content="1200">
     <meta property="og:image:height" content="630">
+    <meta property="og:image:alt" content="БК-СТРОЙ — ремонт коммерческих помещений и устройство фасадов">
     <meta property="og:locale" content="ru_RU">
     
-    <!-- Twitter -->
+    <!-- Twitter Card -->
     <meta name="twitter:card" content="summary_large_image">
-    <meta name="twitter:url" content="{{ request.url if request else 'https://bk-stroy.ru/' }}">
-    <meta name="twitter:title" content="БК-СТРОЙ | Ремонт коммерческих помещений и устройство фасадов">
-    <meta name="twitter:description" content="Профессиональный ремонт коммерческих помещений, устройство фасадов зданий в Москве и области. Работаем с 2016 года.">
-    <meta name="twitter:image" content="{{ url_for('static', filename='images/og-image.jpg', _external=True) if url_for else 'https://bk-stroy.ru/static/images/og-image.jpg' }}">
+    <meta name="twitter:url" content="{{ seo.seo_canonical|default(seo.seo_base_url|default('https://bk-stroy.ru') + '/') }}">
+    <meta name="twitter:title" content="{{ seo.seo_title|default('БК-СТРОЙ | Ремонт коммерческих помещений и устройство фасадов') }}">
+    <meta name="twitter:description" content="{{ seo.seo_description|default('Профессиональный ремонт коммерческих помещений, устройство фасадов зданий в Москве и области. Работаем с 2016 года.') }}">
+    <meta name="twitter:image" content="{{ seo.seo_og_image }}">
+    <meta name="twitter:image:alt" content="БК-СТРОЙ — ремонт коммерческих помещений и устройство фасадов">
     
     <!-- Favicon -->
     <link rel="icon" type="image/x-icon" href="{{ url_for('static', filename='images/logo.ico') }}">
@@ -56,16 +59,16 @@
     <meta name="apple-mobile-web-app-title" content="БК-СТРОЙ">
     <meta name="mobile-web-app-capable" content="yes">
     
-    <!-- Structured Data (JSON-LD) -->
+    <!-- Structured Data (JSON-LD) — для поисковиков (находимость по запросам) -->
     <script type="application/ld+json">
     {
       "@context": "https://schema.org",
       "@type": "LocalBusiness",
       "name": "БК-СТРОЙ",
-      "image": "{{ url_for('static', filename='images/logo.png', _external=True) if url_for else 'https://bk-stroy.ru/static/images/logo.png' }}",
-      "@id": "{{ request.url_root if request else 'https://bk-stroy.ru/' }}",
-      "url": "{{ request.url_root if request else 'https://bk-stroy.ru/' }}",
-      "telephone": "+7-495-123-45-67",
+      "image": "{{ seo.seo_base_url|default('https://bk-stroy.ru') }}{{ url_for('static', filename='images/logo.png') }}",
+      "@id": "{{ seo.seo_canonical|default(seo.seo_base_url|default('https://bk-stroy.ru') + '/') }}",
+      "url": "{{ seo.seo_base_url|default('https://bk-stroy.ru') }}/",
+      "telephone": "{{ seo.seo_phone|default('+74951234567') }}",
       "priceRange": "$$",
       "address": {
         "@type": "PostalAddress",
@@ -104,7 +107,25 @@
       }
     }
     </script>
-    
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "WebPage",
+      "name": "{{ seo.seo_title|default('БК-СТРОЙ | Ремонт коммерческих помещений и устройство фасадов в Москве') }}",
+      "description": "{{ seo.seo_description|default('Профессиональный ремонт коммерческих помещений, устройство фасадов зданий в Москве и области. Работаем с 2016 года. Гарантия качества.') }}",
+      "url": "{{ seo.seo_canonical|default(seo.seo_base_url|default('https://bk-stroy.ru') + '/') }}",
+      "primaryImageOfPage": {
+        "@type": "ImageObject",
+        "url": "{{ seo.seo_og_image }}"
+      },
+      "inLanguage": "ru",
+      "isPartOf": {
+        "@type": "WebSite",
+        "name": "БК-СТРОЙ",
+        "url": "{{ seo.seo_base_url|default('https://bk-stroy.ru') }}/"
+      }
+    }
+    </script>
     <script type="application/ld+json">
     {
       "@context": "https://schema.org",
