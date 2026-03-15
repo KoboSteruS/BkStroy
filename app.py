@@ -105,6 +105,18 @@ def contact():
     return jsonify({'success': True, 'message': 'Спасибо за заявку! Мы свяжемся с вами в ближайшее время.'})
 
 
+@app.route('/sitemap.xml')
+def sitemap():
+    """Отдаём sitemap.xml для поисковых систем."""
+    return app.send_static_file('sitemap.xml')
+
+
+@app.route('/robots.txt')
+def robots():
+    """Отдаём robots.txt для поисковых систем."""
+    return app.send_static_file('robots.txt')
+
+
 @app.route('/privacy')
 def privacy():
     """Страница «Политика конфиденциальности»."""

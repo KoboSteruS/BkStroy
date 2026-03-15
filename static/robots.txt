@@ -1,0 +1,33 @@
+# robots.txt для БК-СТРОЙ
+
+User-agent: *
+Allow: /
+Disallow: /admin
+Disallow: /*/admin
+Disallow: /api/
+
+# Sitemap
+Sitemap: https://bk-stroy.ru/sitemap.xml
+
+# Основные поисковые боты
+User-agent: Googlebot
+Allow: /
+Disallow: /admin
+Disallow: /*/admin
+Disallow: /api/
+
+User-agent: Yandex
+Allow: /
+Disallow: /admin
+Disallow: /*/admin
+Disallow: /api/
+
+User-agent: Bingbot
+Allow: /
+Disallow: /admin
+Disallow: /*/admin
+Disallow: /api/
+
+# Crawl-delay для менее приоритетных ботов
+User-agent: *
+Crawl-delay: 10
