@@ -127,6 +127,20 @@
         if (objectImagesUpload) objectImagesUpload.click();
     }
 
+    function parseUploadResponse(r) {
+        var ct = r.headers.get('content-type') || '';
+        if (ct.indexOf('application/json') === -1) {
+            return Promise.reject(new Error('Сервер вернул неверный ответ (не JSON). Попробуйте снова или загрузите по одному файлу.'));
+        }
+        return r.text().then(function(text) {
+            try {
+                return JSON.parse(text);
+            } catch (e) {
+                throw new Error('Сервер вернул неверный ответ. Попробуйте снова или загрузите файлы по одному.');
+            }
+        });
+    }
+
     function onImageFilesSelected() {
         var files = objectImagesUpload && objectImagesUpload.files;
         if (!files || files.length === 0) return;
@@ -141,8 +155,10 @@
             body: formData,
             credentials: 'same-origin'
         }).then(function(r) {
-            if (!r.ok) return r.json().then(function(d) { throw new Error(d.error || 'Ошибка загрузки'); });
-            return r.json();
+            return parseUploadResponse(r).then(function(data) {
+                if (!r.ok) throw new Error(data.error || 'Ошибка загрузки');
+                return data;
+            });
         }).then(function(data) {
             var urls = (data.urls || []).filter(Boolean);
             if (urls.length) {
@@ -151,7 +167,7 @@
                 objectImages.value = cur ? cur + '\n' + add : add;
             }
         }).catch(function(err) {
-            alert('Ошибка загрузки: ' + err.message);
+            alert('Ошибка загрузки: ' + (err.message || 'Неизвестная ошибка. Попробуйте загрузить по одному файлу.'));
         }).then(function() {
             if (btnUploadImages) {
                 btnUploadImages.disabled = false;
@@ -465,25 +481,24 @@
             body: formData,
             credentials: 'same-origin'
         }).then(function(r) {
-            if (!r.ok) return r.json().then(function(d) { throw new Error(d.error || 'Ошибка загрузки'); });
-            return r.json();
+            return parseUploadResponse(r).then(function(data) {
+                if (!r.ok) throw new Error(data.error || 'Ошибка загрузки');
+                return data;
+            });
         }).then(function(data) {
             var urls = (data.urls || []).filter(Boolean);
             if (urls.length) {
-                // Добавляем новые URL к текущим изображениям
-                // Преобразуем полные URL в относительные пути для слайдера
                 urls.forEach(function(url) {
-                    // Извлекаем путь из полного URL: http://domain/static/images/file.jpg -> images/file.jpg
                     var path = url;
                     if (url.indexOf('/static/') !== -1) {
-                        path = url.substring(url.indexOf('/static/') + 8); // +8 для пропуска "/static/"
+                        path = url.substring(url.indexOf('/static/') + 8);
                     }
                     currentSliderImages.push(path);
                 });
                 renderSliderImages();
             }
         }).catch(function(err) {
-            alert('Ошибка загрузки: ' + err.message);
+            alert('Ошибка загрузки: ' + (err.message || 'Неизвестная ошибка. Попробуйте загрузить по одному файлу.'));
         }).then(function() {
             if (btnUploadSliderImages) {
                 btnUploadSliderImages.disabled = false;
