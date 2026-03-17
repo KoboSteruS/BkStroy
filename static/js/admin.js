@@ -128,15 +128,19 @@
     }
 
     function parseUploadResponse(r) {
+        var status = r.status;
         var ct = r.headers.get('content-type') || '';
+        if (status >= 300 && status < 400) {
+            return Promise.reject(new Error('Перенаправление (код ' + status + '). С мобильного часто теряется сессия: откройте админку заново по ссылке в обычном браузере (Chrome или Safari), зайдите и попробуйте загрузку снова.'));
+        }
         if (ct.indexOf('application/json') === -1) {
-            return Promise.reject(new Error('Сервер вернул неверный ответ (не JSON). Попробуйте снова или загрузите по одному файлу.'));
+            return Promise.reject(new Error('Ответ не JSON (код ' + status + '). Откройте админку в браузере (не в приложении), зайдите по ссылке снова и попробуйте. Код: ' + status));
         }
         return r.text().then(function(text) {
             try {
                 return JSON.parse(text);
             } catch (e) {
-                throw new Error('Сервер вернул неверный ответ. Попробуйте снова или загрузите файлы по одному.');
+                throw new Error('Ответ сервера не распознан (код ' + status + '). Попробуйте в обычном браузере. Код: ' + status);
             }
         });
     }
@@ -153,10 +157,11 @@
         fetch('/api/admin/upload', {
             method: 'POST',
             body: formData,
-            credentials: 'same-origin'
+            credentials: 'same-origin',
+            redirect: 'manual'
         }).then(function(r) {
             return parseUploadResponse(r).then(function(data) {
-                if (!r.ok) throw new Error(data.error || 'Ошибка загрузки');
+                if (!r.ok) throw new Error((data.error || 'Ошибка загрузки') + ' (код ' + r.status + ')');
                 return data;
             });
         }).then(function(data) {
@@ -479,10 +484,11 @@
         fetch('/api/admin/upload', {
             method: 'POST',
             body: formData,
-            credentials: 'same-origin'
+            credentials: 'same-origin',
+            redirect: 'manual'
         }).then(function(r) {
             return parseUploadResponse(r).then(function(data) {
-                if (!r.ok) throw new Error(data.error || 'Ошибка загрузки');
+                if (!r.ok) throw new Error((data.error || 'Ошибка загрузки') + ' (код ' + r.status + ')');
                 return data;
             });
         }).then(function(data) {
@@ -498,7 +504,7 @@
                 renderSliderImages();
             }
         }).catch(function(err) {
-            alert('Ошибка загрузки: ' + (err.message || 'Неизвестная ошибка. Попробуйте загрузить по одному файлу.'));
+            alert('Ошибка загрузки: ' + (err.message || 'Неизвестная ошибка. Код ответа поможет понять причину.'));
         }).then(function() {
             if (btnUploadSliderImages) {
                 btnUploadSliderImages.disabled = false;

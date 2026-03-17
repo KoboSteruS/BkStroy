@@ -31,6 +31,11 @@ def load_config():
 CONFIG = load_config()
 app.secret_key = CONFIG.get('secret_key', 'dev-secret-key')
 
+# С мобильного сессия часто не уходит из-за SameSite. На продакшене (HTTPS) разрешаем куку в cross-site запросах
+if CONFIG.get('site_url') and str(CONFIG.get('site_url', '')).startswith('https'):
+    app.config['SESSION_COOKIE_SAMESITE'] = 'None'
+    app.config['SESSION_COOKIE_SECURE'] = True
+
 def get_admin_token():
     return CONFIG.get('admin_token', '')
 
