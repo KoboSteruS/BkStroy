@@ -1049,8 +1049,9 @@ button {
 
 @media (min-width: 1024px) {
   .process-layout {
-    grid-template-columns: 1.35fr 0.65fr;
-    gap: 3rem;
+    /* Текст слева шире, фото справа компактнее */
+    grid-template-columns: minmax(0, 1.25fr) minmax(0, 0.75fr);
+    gap: 2.5rem;
     align-items: start;
   }
 }
@@ -1256,11 +1257,24 @@ button {
 
 @media (min-width: 1024px) {
   .process-media {
-    min-height: 28rem;
+    min-height: 24rem;
   }
   .process-slider-wrap {
-    height: 38rem;
-    min-height: 32rem;
+    height: min(34rem, 72vh);
+    min-height: 26rem;
+  }
+  /* Слайдер справа: градиент к левому краю (к тексту) */
+  .process-media .process-slide::after {
+    background: linear-gradient(90deg, rgba(255, 255, 255, 0.92) 0%, rgba(255, 255, 255, 0.55) 22%, transparent 50%);
+  }
+  .process-media .process-slide::before {
+    background:
+      linear-gradient(90deg, transparent 50%, rgba(255, 255, 255, 0.2) 75%, rgba(255, 255, 255, 0.55) 100%),
+      linear-gradient(180deg, transparent 58%, rgba(255, 255, 255, 0.45) 82%, rgba(255, 255, 255, 0.9) 100%);
+  }
+  .process-slider-controls {
+    left: auto;
+    right: 1.5rem;
   }
 }
 

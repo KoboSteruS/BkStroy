@@ -326,6 +326,17 @@
                 </div>
 
                 <div class="process-layout">
+                    <div class="process-steps" id="processSteps">
+                        {% for step in content.process.steps|default([]) %}
+                        <div class="process-step {% if loop.index == 1 %}process-step--active{% endif %}" data-step="{{ loop.index }}">
+                            <div class="process-step-num">{{ step.num }}</div>
+                            <div class="process-step-body">
+                                <h3 class="process-step-title">{{ step.title }}</h3>
+                                <p class="process-step-desc">{{ step.desc }}</p>
+                            </div>
+                        </div>
+                        {% endfor %}
+                    </div>
                     <div class="process-media">
                         <div class="process-slider-wrap">
                             <div class="process-slider" id="processSlider">
@@ -350,17 +361,6 @@
                                 </button>
                             </div>
                         </div>
-                    </div>
-                    <div class="process-steps" id="processSteps">
-                        {% for step in content.process.steps|default([]) %}
-                        <div class="process-step {% if loop.index == 1 %}process-step--active{% endif %}" data-step="{{ loop.index }}">
-                            <div class="process-step-num">{{ step.num }}</div>
-                            <div class="process-step-body">
-                                <h3 class="process-step-title">{{ step.title }}</h3>
-                                <p class="process-step-desc">{{ step.desc }}</p>
-                            </div>
-                        </div>
-                        {% endfor %}
                     </div>
                 </div>
 
